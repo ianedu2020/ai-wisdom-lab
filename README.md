@@ -1,1 +1,1 @@
-# ai_wisdom_lab
+# ai-wisdom-lab
