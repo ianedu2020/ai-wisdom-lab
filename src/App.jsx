@@ -27,7 +27,7 @@ import {
 const PROFILE_IMAGE_URL = "/157.jpg";
 
 const CONTACT_INFO = {
-  youtube: "https://www.youtube.com/channel/UC0bDgE8ANqkVTceXQviwj1g",
+  youtube: "https://www.youtube.com/@Ianeduai",
   email: "2cswisdom@gmail.com",
   instagram: "https://www.instagram.com/ji_wisdom80/",
   kakao: "https://open.kakao.com/o/sM8DSvri",
