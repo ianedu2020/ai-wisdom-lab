@@ -46,6 +46,7 @@ const Navbar = () => {
   const navLinks = [
     { name: "연구소 소개", href: "#home" },
     { name: "강의분야", href: "#education" },
+    { name: "강의자료", href: "#materials" },
     { name: "진로체험", href: "#career" },
     { name: "유튜브", href: "#youtube" },
     { name: "창의교구", href: "#robot" },
@@ -379,6 +380,62 @@ const EducationField = () => {
     </section>
   );
 };
+
+// 강의자료: 새 교안은 이 배열에 한 줄씩 추가합니다. (교안마다 Vercel 프로젝트 이름을 다르게)
+const MATERIALS = [
+  {
+    course: "ACA 2기 · 2주차",
+    title: "ChatGPT로 내 일 처리하기",
+    desc: "챗 · 워크 · 프로젝트 · 플러그인",
+    url: "https://aca2-week2.vercel.app",
+  },
+  {
+    course: "ACA 2기 · 2주차",
+    title: "나만의 업무 챗봇",
+    desc: "같은 설명, 두 번 하지 않기 — 프로젝트 · 플러그인 · 워크",
+    url: "https://aca2-week2-chatbot.vercel.app",
+  },
+];
+
+const MaterialsSection = () => (
+  <section id="materials" className="bg-white py-24 break-keep">
+    <div className="mx-auto max-w-6xl px-5">
+      <div className="mb-14 text-center">
+        <h2 className="mb-4 text-3xl font-black text-slate-900 md:text-4xl">
+          강의자료
+        </h2>
+        <p className="mx-auto max-w-2xl font-medium text-slate-500">
+          수업에서 사용한 교안을 바로 열어볼 수 있습니다.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        {MATERIALS.map((m) => (
+          <a
+            key={m.url}
+            href={m.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-start justify-between gap-4 rounded-[2rem] border border-slate-100 bg-slate-50 p-8 transition-all duration-300 hover:-translate-y-1 hover:border-[#2563eb] hover:bg-white hover:shadow-xl hover:shadow-blue-100"
+          >
+            <div>
+              <span className="mb-3 inline-block rounded-full bg-blue-50 px-3 py-1 text-xs font-bold text-[#2563eb]">
+                {m.course}
+              </span>
+              <h3 className="mb-2 text-xl font-bold text-slate-900 md:text-2xl">
+                {m.title}
+              </h3>
+              <p className="text-slate-500">{m.desc}</p>
+            </div>
+            <ArrowUpRight
+              className="mt-1 shrink-0 text-slate-300 transition-colors group-hover:text-[#2563eb]"
+              size={28}
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 const CareerSection = () => (
   <section id="career" className="bg-white py-24">
@@ -782,6 +839,7 @@ export default function App() {
         <Hero />
         <Stats />
         <EducationField />
+        <MaterialsSection />
         <CareerSection />
         <YouTubeSection />
         <RobotNewsletter />
