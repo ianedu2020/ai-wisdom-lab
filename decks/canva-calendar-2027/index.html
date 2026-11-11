@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>캔바로 만드는 2027 나만의 달력 | AI 지혜 연구소</title>
+<meta name="description" content="캔바(Canva)로 2027년 사진 달력을 만들어 인쇄까지 해 보는 단계별 실습 교안 · 강사 김지혜">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:#EDE7DA;color:#23304A;font-family:'Noto Sans KR',Arial,sans-serif}
+.bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;background:#23304A;color:#FBF7EF}
+.bar .num{font-variant-numeric:tabular-nums;font-size:16px}
+.bar .btns{display:flex;gap:8px}
+.bar button,.bar a{font:inherit;font-size:15px;color:#FBF7EF;background:#2E3D5C;border:1px solid #4A5A7C;border-radius:10px;padding:8px 14px;cursor:pointer;text-decoration:none}
+.bar button:hover,.bar a:hover{background:#3A4B70}
+.bar button:focus-visible,.bar a:focus-visible{outline:3px solid #FFC9A8;outline-offset:2px}
+main{max-width:1280px;margin:0 auto;padding:20px 16px 60px;display:flex;flex-direction:column;gap:20px}
+.frame{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border-radius:14px;box-shadow:0 6px 24px rgba(35,48,74,.18);background:#FBF7EF}
+.slide{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;transform:scale(var(--k,0.5))}
+.slide>section{position:relative;width:1920px;height:1080px;overflow:hidden}
+.slide h1,.slide h2,.slide h3,.slide p{margin:0}
+.slide ul,.slide ol{margin:0;padding-left:1.3em}
+.slide table{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden}
+.slide th,.slide td{padding:.45em .7em;text-align:left;vertical-align:middle;border-bottom:1px solid #E7DFD0;line-height:1.35}
+.slide tr:last-child td{border-bottom:none}
+.slide a{color:inherit}
+body.present{background:#111;overflow:hidden}
+body.present .bar{display:none}
+body.present main{max-width:none;padding:0;gap:0;height:100vh;justify-content:center;align-items:center}
+body.present .frame{display:none;width:min(100vw,calc(100vh*16/9));border-radius:0;box-shadow:none}
+body.present .frame.on{display:block}
+@media print{.bar{display:none} main{padding:0;gap:0} .frame{break-after:page;border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <span class="num" id="num">01 / 14</span>
+  <div class="btns">
+    <button id="prev" aria-label="이전 장">◀</button>
+    <button id="next" aria-label="다음 장">▶</button>
+    <button id="present">발표 모드</button>
+    <a href="https://ai-wisdom-lab.vercel.app/materials.html">강의자료 목록</a>
+  </div>
+</div>
+<main id="deck">
+<div class="frame" id="f1"><div class="slide"><section id="cover" style="background:#23304A;color:#FBF7EF;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:space-between;gap:48px">
+<p style="font-size:32px;font-weight:700;color:#FFC9A8;letter-spacing:2px">캔바(Canva) 실습 교육</p>
+<div style="display:flex;flex-direction:column;gap:40px;max-width:1160px">
+<h1 style="font-family:'Jua', Arial, sans-serif;font-size:120px;font-weight:400;line-height:1.15">캔바로 만드는<br>2027 나만의 달력</h1>
+<p style="font-size:40px;line-height:1.5;color:#D9DFEA">사진 한 장으로 시작해 12개월 달력을 완성하고, 인쇄까지 해 봅니다.</p>
+</div>
+<p style="font-size:28px;color:#D9DFEA">강사 <b>김지혜</b> · AI 지혜 연구소 <a href="https://ai-wisdom-lab.vercel.app">ai-wisdom-lab.vercel.app</a></p>
+<div style="position:absolute;right:128px;top:128px;width:360px;display:flex;flex-direction:column;background:#FBF7EF;border-radius:24px;overflow:hidden;box-shadow:0 16px 40px rgba(0,0,0,0.3)">
+<p style="background:#E8553D;color:#23304A;font-family:'Jua', Arial, sans-serif;font-size:44px;text-align:center;padding:20px">1월</p>
+<p style="font-family:'Jua', Arial, sans-serif;font-size:120px;line-height:1.1;color:#23304A;text-align:center;padding:36px 20px 8px">2027</p>
+<p style="font-size:28px;color:#5B6577;text-align:center;padding:0 20px 36px">나만의 달력</p>
+</div>
+</section></div></div>
+<div class="frame" id="f2"><div class="slide"><section id="goal" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">오늘의 목표</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">수업이 끝나면 손에 남는 세 가지</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">1</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">내 사진 달력 한 장</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">2027년 1월 달력에 내 사진과 문구를 넣어 완성합니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">2</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">12개월 달력 한 권</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">같은 방법으로 2월부터 12월까지 채워 한 해 달력을 만듭니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">3</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">인쇄용 PDF 파일</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">집 프린터나 인쇄소에서 바로 뽑을 수 있는 파일로 저장합니다.</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px">오늘은 한 달치를 제대로 만드는 것이 먼저입니다. 한 장을 만들 줄 알면 열두 장은 반복입니다.</p>
+</section></div></div>
+<div class="frame" id="f3"><div class="slide"><section id="flow" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">수업 흐름 · 2시간 기준 예시</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">여섯 단계로 달력을 완성합니다</h2>
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;padding:28px 32px;border:2px solid #E7DFD0;border-radius:20px">
+<p style="font-size:26px;font-weight:700;color:#C23B25">STEP 1 · 15분</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">템플릿 고르기</h3>
+<p style="font-size:26px;line-height:1.45;color:#3D4960">접속하고 2027 달력 서식 선택</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;padding:28px 32px;border:2px solid #E7DFD0;border-radius:20px">
+<p style="font-size:26px;font-weight:700;color:#C23B25">STEP 2 · 20분</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">사진 넣기</h3>
+<p style="font-size:26px;line-height:1.45;color:#3D4960">내 사진을 올려 달력에 배치</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;padding:28px 32px;border:2px solid #E7DFD0;border-radius:20px">
+<p style="font-size:26px;font-weight:700;color:#C23B25">STEP 3 · 15분</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">글자 바꾸기</h3>
+<p style="font-size:26px;line-height:1.45;color:#3D4960">제목과 문구, 글꼴과 색 변경</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;padding:28px 32px;border:2px solid #E7DFD0;border-radius:20px">
+<p style="font-size:26px;font-weight:700;color:#C23B25">STEP 4 · 15분</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">기념일 표시</h3>
+<p style="font-size:26px;line-height:1.45;color:#3D4960">생일과 공휴일을 그림으로 표시</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#FFFFFF;padding:28px 32px;border:2px solid #E7DFD0;border-radius:20px">
+<p style="font-size:26px;font-weight:700;color:#C23B25">STEP 5 · 30분</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">12개월 채우기</h3>
+<p style="font-size:26px;line-height:1.45;color:#3D4960">나머지 달도 같은 방법으로 완성</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px;background:#23304A;padding:28px 32px;border-radius:20px">
+<p style="font-size:26px;font-weight:700;color:#FFC9A8">STEP 6 · 15분</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3;color:#FBF7EF">저장하고 인쇄</h3>
+<p style="font-size:26px;line-height:1.45;color:#D9DFEA">PDF로 내려받아 종이로 출력</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">남는 10분은 완성작 함께 보기와 질문 시간으로 씁니다.</p>
+</section></div></div>
+<div class="frame" id="f4"><div class="slide"><section id="ready" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">시작 전 준비</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">준비물 확인하고 캔바에 들어가기</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">준비물</h3>
+<ul style="font-size:30px;line-height:1.6;color:#3D4960">
+<li>인터넷이 되는 컴퓨터 (크롬 브라우저)</li>
+<li>캔바 계정 (구글 계정이나 이메일로 가입)</li>
+<li>달력에 넣을 사진 12장 이상</li>
+<li>가족 생일·기념일을 적은 메모</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">접속하는 순서</h3>
+<ol style="font-size:30px;line-height:1.6;color:#3D4960">
+<li>주소창에 <b>canva.com</b> 입력</li>
+<li>오른쪽 위 <b>로그인</b> 또는 <b>가입</b> 누르기</li>
+<li>본인 계정으로 직접 로그인</li>
+<li>캔바 첫 화면(홈)이 보이면 준비 끝</li>
+</ol>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px">사진은 미리 바탕화면에 ‘달력사진’ 폴더를 만들어 모아 두면 수업이 훨씬 빨라집니다.</p>
+</section></div></div>
+<div class="frame" id="f5"><div class="slide"><section id="step1" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">STEP 1 · 템플릿 고르기</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">2027 달력 서식부터 고릅니다</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">1</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">‘2027 달력’ 검색</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">캔바 첫 화면 검색창에 입력하고 Enter 키를 누릅니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">2</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">서식 하나 고르기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">사진 자리가 있는 서식을 눌러 크게 살펴봅니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">3</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">맞춤 편집 누르기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">‘이 템플릿 맞춤 편집’을 누르면 편집 화면이 열립니다.</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px"><b>꼭 확인</b> · 서식에 2027년이라고 적혀 있는지 봅니다. 다른 해 서식은 요일이 맞지 않습니다. 왕관 표시가 붙은 서식은 유료입니다.</p>
+</section></div></div>
+<div class="frame" id="f6"><div class="slide"><section id="screen" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">편집 화면 둘러보기</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">네 군데만 알면 됩니다</h2>
+<table style="font-size:30px;color:#23304A;background:#FFFFFF;border:2px solid #E7DFD0;border-radius:16px">
+<tr style="background:#23304A"><th style="width:18%;color:#FBF7EF;text-align:left">위치</th><th style="width:34%;color:#FBF7EF;text-align:left">이름</th><th style="width:48%;color:#FBF7EF;text-align:left">하는 일</th></tr>
+<tr><td>왼쪽</td><td>메뉴 (요소·텍스트·업로드 항목)</td><td>달력에 넣을 재료를 고릅니다</td></tr>
+<tr><td>가운데</td><td>작업 화면</td><td>달력을 직접 꾸미는 곳입니다</td></tr>
+<tr><td>위쪽</td><td>도구 모음</td><td>고른 글자·사진의 색과 크기를 바꿉니다</td></tr>
+<tr><td>오른쪽 위</td><td>공유 버튼</td><td>파일로 내려받고 인쇄합니다</td></tr>
+</table>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px"><b>안심하세요</b> · 캔바는 자동으로 저장됩니다. 잘못 눌렀으면 <b>Ctrl + Z</b>로 한 단계씩 되돌립니다.</p>
+</section></div></div>
+<div class="frame" id="f7"><div class="slide"><section id="step2" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">STEP 2 · 사진 넣기</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">내 사진을 달력에 올립니다</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">1</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">업로드 항목 열기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">왼쪽 메뉴에서 ‘업로드 항목’을 누르고 ‘파일 업로드’를 누릅니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">2</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">사진 고르기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">‘달력사진’ 폴더에서 사진을 고르고 ‘열기’를 누릅니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">3</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">끌어다 놓기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">올라온 사진을 달력의 사진 자리로 끌어 놓으면 틀에 맞게 들어갑니다.</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px"><b>TIP</b> · 사진을 두 번 누르면 틀 안에서 보이는 부분을 옮길 수 있습니다. 사진이 없으면 ‘요소’에서 ‘꽃’, ‘바다’를 검색해 무료 사진을 씁니다.</p>
+</section></div></div>
+<div class="frame" id="f8"><div class="slide"><section id="step3" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">STEP 3 · 글자 바꾸기</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">제목과 문구를 내 것으로 바꿉니다</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">1</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">글자 두 번 누르기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">바꿀 글자를 두 번 누르면 커서가 깜빡입니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">2</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">새 문구 입력</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">원래 글자를 지우고 ‘우리 가족 2027’처럼 적습니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">3</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">글꼴·크기·색</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">글자를 고른 채 위쪽 도구 모음에서 바꿉니다.</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px"><b>TIP</b> · 글자를 새로 넣으려면 왼쪽 ‘텍스트’에서 ‘텍스트 상자 추가’를 누릅니다. 글꼴은 두 가지 안에서 고르면 깔끔합니다.</p>
+</section></div></div>
+<div class="frame" id="f9"><div class="slide"><section id="step4" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">STEP 4 · 기념일 표시</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">생일과 기념일을 그림으로 표시합니다</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">1</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">요소에서 검색</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">왼쪽 ‘요소’에서 ‘케이크’, ‘하트’, ‘별’을 검색합니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">2</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">날짜 칸에 올리기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">그림을 눌러 넣고, 모서리를 끌어 줄인 뒤 날짜 칸으로 옮깁니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">3</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">이름 적기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">‘텍스트’로 ‘엄마 생신’처럼 작은 글씨를 덧붙입니다.</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px"><b>TIP</b> · 같은 그림을 또 쓸 때는 <b>Ctrl + C</b>, <b>Ctrl + V</b>로 복사해 붙입니다. 왕관 표시가 있는 그림은 유료이니 피합니다.</p>
+</section></div></div>
+<div class="frame" id="f10"><div class="slide"><section id="holidays" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:40px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">확인용 자료</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">2027년 공휴일, 달력과 맞춰 봅니다</h2>
+<div style="display:flex;gap:32px;align-items:start">
+<table style="flex:1;font-size:26px;color:#23304A;background:#FFFFFF;border:2px solid #E7DFD0;border-radius:16px">
+<tr style="background:#23304A"><th style="width:30%;color:#FBF7EF;text-align:left">날짜</th><th style="width:16%;color:#FBF7EF;text-align:left">요일</th><th style="width:54%;color:#FBF7EF;text-align:left">공휴일</th></tr>
+<tr><td>1/1</td><td>금</td><td>신정</td></tr>
+<tr><td>2/6~2/9</td><td>토~화</td><td>설 연휴 (2/7 설날, 2/9 대체)</td></tr>
+<tr><td>3/1</td><td>월</td><td>삼일절</td></tr>
+<tr><td>5/1</td><td>토</td><td>노동절 (5/3 월 대체)</td></tr>
+<tr><td>5/5</td><td>수</td><td>어린이날</td></tr>
+<tr><td>5/13</td><td>목</td><td>부처님오신날</td></tr>
+<tr><td>6/6</td><td>일</td><td>현충일</td></tr>
+</table>
+<table style="flex:1;font-size:26px;color:#23304A;background:#FFFFFF;border:2px solid #E7DFD0;border-radius:16px">
+<tr style="background:#23304A"><th style="width:30%;color:#FBF7EF;text-align:left">날짜</th><th style="width:16%;color:#FBF7EF;text-align:left">요일</th><th style="width:54%;color:#FBF7EF;text-align:left">공휴일</th></tr>
+<tr><td>7/17</td><td>토</td><td>제헌절 (7/19 월 대체)</td></tr>
+<tr><td>8/15</td><td>일</td><td>광복절 (8/16 월 대체)</td></tr>
+<tr><td>9/14~9/16</td><td>화~목</td><td>추석 연휴 (9/15 추석)</td></tr>
+<tr><td>10/3</td><td>일</td><td>개천절 (10/4 월 대체)</td></tr>
+<tr><td>10/9</td><td>토</td><td>한글날 (10/11 월 대체)</td></tr>
+<tr><td>12/25</td><td>토</td><td>성탄절 (12/27 월 대체)</td></tr>
+</table>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1300px;font-size:24px;color:#5B6577">기준: 우주항공청 2027년 월력요항 · ‘대체’는 대체공휴일 · 임시공휴일은 나중에 추가될 수 있습니다</p>
+</section></div></div>
+<div class="frame" id="f11"><div class="slide"><section id="step5" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">STEP 5 · 12개월 채우기</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">같은 방법으로 열두 달을 완성합니다</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">1</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">페이지 목록 보기</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">화면 아래쪽에 1월부터 12월까지 페이지가 줄지어 있습니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">2</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">다음 달로 이동</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">2월 페이지를 누르면 가운데 화면이 2월로 바뀝니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">3</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">STEP 2~4 반복</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">사진 넣기, 글자 바꾸기, 기념일 표시를 달마다 되풀이합니다.</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px"><b>TIP</b> · 봄에는 꽃, 여름에는 바다처럼 계절에 맞는 사진을 고르면 달력이 살아납니다. 처음부터 12개월이 모두 들어 있는 서식을 골라야 편합니다.</p>
+</section></div></div>
+<div class="frame" id="f12"><div class="slide"><section id="step6" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">STEP 6 · 저장하고 인쇄</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">파일로 내려받아 종이로 뽑습니다</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">1</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">공유 → 다운로드</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">오른쪽 위 ‘공유’를 누르고 ‘다운로드’를 고릅니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">2</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">‘PDF 인쇄’ 선택</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">파일 형식을 ‘PDF 인쇄’로 바꾸고 ‘다운로드’를 누릅니다.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FFFFFF;padding:40px;border:2px solid #E7DFD0;border-radius:24px">
+<p style="font-family:'Jua', Arial, sans-serif;font-size:72px;line-height:1.1;color:#E8553D">3</p>
+<h3 style="font-size:36px;font-weight:700;line-height:1.3">열어서 인쇄</h3>
+<p style="font-size:28px;line-height:1.5;color:#3D4960">내려받은 파일을 열고 <b>Ctrl + P</b>로 인쇄합니다.</p>
+</div>
+</div>
+<p style="font-size:28px;line-height:1.5;background:#FFF1D6;padding:24px 32px;border-radius:16px"><b>TIP</b> · 휴대폰으로 보내거나 카톡에 올릴 때는 PNG나 JPG가 편합니다. 인쇄소에 맡길 때는 ‘재단선 및 재단 물림’을 켜고 내려받습니다.</p>
+</section></div></div>
+<div class="frame" id="f13"><div class="slide"><section id="faq" style="background:#FBF7EF;color:#23304A;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#C23B25">자주 막히는 곳</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">이럴 땐 이렇게 합니다</h2>
+<table style="font-size:26px;color:#23304A;background:#FFFFFF;border:2px solid #E7DFD0;border-radius:16px">
+<tr style="background:#23304A"><th style="width:36%;color:#FBF7EF;text-align:left">이런 일이 생기면</th><th style="width:64%;color:#FBF7EF;text-align:left">이렇게 해결합니다</th></tr>
+<tr><td>파일에 캔바 무늬가 찍혀 나와요</td><td>유료 그림·사진이 들어 있습니다. 왕관 표시 요소를 무료로 바꿉니다</td></tr>
+<tr><td>요일이 실제와 달라요</td><td>2027년 서식이 아닙니다. ‘2027 달력’으로 다시 고릅니다</td></tr>
+<tr><td>사진이 틀에 안 들어가요</td><td>사진을 틀 위로 끌어, 테두리 색이 바뀔 때 놓습니다</td></tr>
+<tr><td>넣은 것이 갑자기 사라졌어요</td><td>Ctrl + Z를 눌러 한 단계씩 되돌립니다</td></tr>
+<tr><td>만들던 달력을 못 찾겠어요</td><td>캔바 첫 화면의 ‘프로젝트’에서 최근 디자인을 엽니다</td></tr>
+</table>
+</section></div></div>
+<div class="frame" id="f14"><div class="slide"><section id="wrap" style="background:#23304A;color:#FBF7EF;font-family:'Noto Sans KR', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;gap:48px">
+<p style="font-size:28px;font-weight:700;color:#FFC9A8">마무리 · 실습 과제</p>
+<h2 style="font-family:'Jua', Arial, sans-serif;font-size:72px;font-weight:400;line-height:1.1">내년 달력은 내 손으로 만듭니다</h2>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#2E3D5C;padding:40px;border-radius:24px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.3;color:#FFC9A8">오늘 안에</h3>
+<ul style="font-size:30px;line-height:1.6;color:#FBF7EF">
+<li>1월 달력에 사진과 문구 넣기</li>
+<li>가족 생일 한 개 이상 표시하기</li>
+<li>PDF로 내려받아 한 장 인쇄하기</li>
+</ul>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#2E3D5C;padding:40px;border-radius:24px">
+<h3 style="font-size:36px;font-weight:700;line-height:1.3;color:#FFC9A8">집에 가서</h3>
+<ul style="font-size:30px;line-height:1.6;color:#FBF7EF">
+<li>나머지 달도 사진으로 채우기</li>
+<li>2027년 공휴일이 맞는지 확인하기</li>
+<li>완성한 달력을 가족에게 선물하기</li>
+</ul>
+</div>
+</div>
+<p style="font-size:32px;line-height:1.5;color:#D9DFEA">같은 방법으로 탁상 달력, 일정표, 가족 행사 포스터도 만들 수 있습니다.</p>
+<p style="font-size:32px;line-height:1.5;color:#FFC9A8"><b>김지혜</b> · 강의자료 다시 보기 · AI 지혜 연구소 <a href="https://ai-wisdom-lab.vercel.app">ai-wisdom-lab.vercel.app</a></p>
+</section></div></div>
+</main>
+<script>
+(function(){
+  var frames=[].slice.call(document.querySelectorAll('.frame')),cur=0,num=document.getElementById('num');
+  function fit(){frames.forEach(function(f){var w=f.offsetWidth;if(w)f.style.setProperty('--k',w/1920)})}
+  function pad(n){return (n<10?'0':'')+n}
+  function show(i,scroll){cur=Math.max(0,Math.min(frames.length-1,i));num.textContent=pad(cur+1)+' / '+pad(frames.length);
+    frames.forEach(function(f,k){f.classList.toggle('on',k===cur)});
+    if(document.body.classList.contains('present'))fit(); else if(scroll)frames[cur].scrollIntoView({behavior:'smooth',block:'center'})}
+  function present(on){document.body.classList.toggle('present',on);
+    if(on){try{document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen().catch(function(){})}catch(e){}}
+    else{try{document.fullscreenElement&&document.exitFullscreen()}catch(e){}}
+    show(cur,!on);setTimeout(fit,60)}
+  document.getElementById('prev').onclick=function(){show(cur-1,true)};
+  document.getElementById('next').onclick=function(){show(cur+1,true)};
+  document.getElementById('present').onclick=function(){present(true)};
+  document.addEventListener('keydown',function(e){
+    var p=document.body.classList.contains('present');
+    if(e.key==='Escape'&&p){present(false);return}
+    if(['ArrowRight','PageDown',' '].indexOf(e.key)>=0){if(p||e.key!==' '){e.preventDefault();show(cur+1,true)}}
+    if(['ArrowLeft','PageUp'].indexOf(e.key)>=0){e.preventDefault();show(cur-1,true)}
+  });
+  document.getElementById('deck').addEventListener('click',function(e){if(document.body.classList.contains('present')&&!e.target.closest('a'))show(cur+1)});
+  document.addEventListener('fullscreenchange',function(){if(!document.fullscreenElement&&document.body.classList.contains('present'))present(false)});
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){if(document.body.classList.contains('present'))return;es.forEach(function(en){if(en.isIntersecting&&en.intersectionRatio>.6){cur=frames.indexOf(en.target);num.textContent=pad(cur+1)+' / '+pad(frames.length)}})},{threshold:[.6]});frames.forEach(function(f){io.observe(f)})}
+  window.addEventListener('resize',fit);fit();show(0);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fit);
+})();
+</script>
+</body>
+</html>
