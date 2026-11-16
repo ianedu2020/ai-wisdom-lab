@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>스마트폰 쉽게 익히기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a; --white:#ffffff; --dark:#2b2b2b; --dark2:#3d3d3d; --gray:#8a8a8a; --line:#d9d9d9;
+  --blue:#1a6fe8; --blue-d:#0f55b8; --blue-l:#e8f0fd; --red:#e0312b; --red-d:#b8231e; --red-l:#fdecea;
+  --bg:var(--white); --fg:var(--black); --card:#ffffff; --sub:#f2f2f2; --muted:#555;
+  --fs:18px;
+  --top:env(safe-area-inset-top,0px); --bot:env(safe-area-inset-bottom,0px);
+}
+body.dark{ --bg:var(--black); --fg:var(--white); --card:#1a1a1a; --sub:#242424; --muted:#b5b5b5; --line:#3d3d3d; --blue-l:#13284a; --red-l:#3d1715; }
+html{font-size:var(--fs)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:'Noto Sans KR',system-ui,sans-serif;background:var(--bg);color:var(--fg);line-height:1.55;word-break:keep-all}
+button{font:inherit;color:inherit;cursor:pointer}
+
+/* ===== 상단 바 ===== */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:20;background:var(--dark);color:var(--white);
+  padding:calc(var(--top) + 10px) 12px 10px;display:flex;align-items:center;gap:8px;min-height:64px}
+.topbar h1{flex:1;margin:0;font-size:1.15rem;font-weight:700;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbtn{min-width:56px;height:48px;border:0;border-radius:12px;background:var(--dark2);color:var(--white);
+  display:flex;align-items:center;justify-content:center;gap:4px;font-size:.85rem;font-weight:700;padding:0 10px}
+.tbtn svg{width:24px;height:24px}
+.tbtn.hidden{visibility:hidden}
+.tbtn.settings{background:var(--blue)}
+
+/* ===== 본문 ===== */
+main{padding:calc(var(--top) + 80px) 16px calc(var(--bot) + 110px);max-width:720px;margin:0 auto}
+.view{display:none}
+.view.on{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2{font-size:1.3rem;margin:.4em 0 .3em}
+h3{font-size:1.08rem;margin:1.2em 0 .5em}
+p{margin:.4em 0}
+.lead{color:var(--muted);margin-bottom:1em}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+.pill{display:inline-block;background:var(--blue);color:#fff;border-radius:99px;padding:2px 12px;font-size:.8rem;font-weight:700}
+.btn{border:0;border-radius:14px;min-height:56px;padding:10px 18px;font-weight:700;font-size:1rem;background:var(--blue);color:#fff;width:100%}
+.btn:active{background:var(--blue-d)}
+.btn.ghost{background:var(--sub);color:var(--fg);border:2px solid var(--line)}
+.btn.dark{background:var(--dark);color:#fff}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+
+/* 홈 */
+.hello{background:var(--black);color:#fff;border-radius:20px;padding:20px}
+body.dark .hello{background:var(--dark)}
+.hello b{color:#7fb0ff}
+.bar{height:14px;background:#444;border-radius:99px;overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--blue);width:0;transition:width .4s}
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.step{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:16px 12px;text-align:left;min-height:130px;display:flex;flex-direction:column;gap:6px}
+.step .n{font-size:.8rem;font-weight:900;color:var(--blue)}
+.step .t{font-size:1.1rem;font-weight:900}
+.step .d{font-size:.85rem;color:var(--muted)}
+.step:active{border-color:var(--blue)}
+.wide{grid-column:1/-1;background:var(--blue);color:#fff;border-color:var(--blue)}
+.wide .n,.wide .d{color:#dfe9ff}
+
+/* ===== 폰 구조 ===== */
+.phone{width:280px;margin:10px auto;background:#000;border-radius:38px;padding:12px;box-shadow:0 0 0 3px var(--dark2)}
+.screen{background:linear-gradient(160deg,#1b3d78,#0b1a33);border-radius:28px;height:500px;position:relative;overflow:hidden;color:#fff}
+.pz{border:0;background:transparent;color:#fff;position:relative}
+.pz.hl{outline:4px solid #ffd400;outline-offset:2px;border-radius:10px;animation:blink 1s infinite}
+@keyframes blink{50%{outline-color:transparent}}
+.status{position:absolute;top:0;left:0;right:0;height:34px;display:flex;justify-content:space-between;align-items:center;padding:0 18px;font-size:13px;font-weight:700;width:100%}
+.clock{position:absolute;top:56px;width:100%;text-align:center;font-size:44px;font-weight:300;letter-spacing:1px}
+.date{position:absolute;top:112px;width:100%;text-align:center;font-size:13px;opacity:.85}
+.apps{position:absolute;top:170px;left:14px;right:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px 6px}
+.app{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px}
+.app .ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;background:#fff;color:#000}
+.navbar{position:absolute;left:0;right:0;bottom:0;height:52px;background:rgba(0,0,0,.55);display:flex;justify-content:space-around;align-items:center;width:100%}
+.navbar .pz{font-size:22px;width:60px;height:44px}
+.navlabel{position:absolute;bottom:56px;left:50%;transform:translateX(-50%);font-size:11px;background:#ffd400;color:#000;padding:2px 8px;border-radius:99px;font-weight:700;white-space:nowrap;display:none}
+.navlabel.on{display:block}
+.explain{min-height:120px}
+.explain .tag{display:inline-block;background:var(--black);color:#fff;border-radius:8px;padding:2px 10px;font-weight:700;margin-bottom:6px}
+body.dark .explain .tag{background:var(--blue)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.legend button{border:2px solid var(--line);background:var(--card);border-radius:12px;min-height:52px;font-weight:700;font-size:.9rem}
+.legend button.on{border-color:var(--blue);background:var(--blue-l)}
+
+/* ===== 용어 ===== */
+.tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.tabs button{flex:0 0 auto;border:2px solid var(--line);background:var(--card);border-radius:99px;padding:8px 16px;font-weight:700;min-height:48px}
+.tabs button.on{background:var(--black);color:#fff;border-color:var(--black)}
+body.dark .tabs button.on{background:var(--blue);border-color:var(--blue)}
+.flip{perspective:1000px;margin:12px 0}
+.flip-in{position:relative;min-height:220px;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;padding:20px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.front{background:var(--dark);color:#fff}
+.front .w{font-size:2rem;font-weight:900}
+.front small{opacity:.7;margin-top:10px}
+.back{background:var(--blue);color:#fff;transform:rotateY(180deg)}
+.back .m{font-size:1.15rem;font-weight:700}
+.back .h{margin-top:12px;background:rgba(255,255,255,.18);border-radius:12px;padding:8px 12px}
+.counter{text-align:center;color:var(--muted);font-weight:700}
+.known{color:var(--blue);font-weight:900}
+
+/* ===== 연습 ===== */
+.task{border:2px solid var(--line);border-radius:18px;padding:14px;margin:14px 0;background:var(--card)}
+.task.done{border-color:var(--blue)}
+.task h3{margin:0 0 4px;display:flex;justify-content:space-between;align-items:center}
+.ok{font-size:.85rem;background:var(--blue);color:#fff;border-radius:99px;padding:2px 10px;display:none}
+.task.done .ok{display:inline-block}
+.zone{margin-top:10px;background:var(--sub);border:2px dashed var(--gray);border-radius:14px;min-height:130px;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;user-select:none;-webkit-user-select:none;touch-action:none;overflow:hidden;font-weight:700}
+.target{width:110px;height:110px;border-radius:50%;background:var(--blue);color:#fff;border:0;font-weight:900;font-size:1rem;position:relative}
+.ring{position:absolute;inset:-6px;border-radius:50%;border:6px solid transparent;border-top-color:var(--black)}
+body.dark .ring{border-top-color:#fff}
+.scrollbox{height:150px;overflow-y:auto;touch-action:pan-y;display:block;padding:14px;text-align:left;font-weight:400}
+.dragball{width:70px;height:70px;border-radius:50%;background:var(--blue);position:absolute;left:16px;top:30px;touch-action:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px}
+.drop{position:absolute;right:16px;top:20px;width:90px;height:90px;border:4px dashed var(--black);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:.8rem}
+body.dark .drop{border-color:#fff}
+.pinchimg{font-size:60px;transition:transform .05s;display:inline-block}
+.swipecard{background:var(--dark);color:#fff;border-radius:14px;padding:18px 22px;transition:transform .2s}
+
+/* ===== 따라하기 ===== */
+.glist button{display:flex;align-items:center;gap:14px;width:100%;text-align:left;border:2px solid var(--line);background:var(--card);border-radius:16px;padding:14px;margin:10px 0;min-height:72px}
+.glist .gi{width:48px;height:48px;border-radius:12px;background:var(--black);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 48px}
+body.dark .glist .gi{background:var(--blue)}
+.glist .gt{font-weight:900;flex:1}
+.glist .gd{font-size:.8rem;color:var(--blue);font-weight:700}
+.player{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:18px}
+.dots{display:flex;gap:6px;justify-content:center;margin:8px 0 14px}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--blue)}
+.bigstep{font-size:3rem;font-weight:900;color:var(--blue);text-align:center;line-height:1}
+.steptext{font-size:1.3rem;font-weight:700;text-align:center;display:block;padding:14px 6px 18px;line-height:1.6}
+.steptext em{font-style:normal;background:var(--blue-l);color:var(--blue);padding:0 6px;border-radius:6px}
+body.dark .steptext em{color:#9cc2ff}
+.tip{background:var(--sub);border-radius:12px;padding:10px 14px;font-size:.9rem;margin-top:10px}
+
+/* 분야 */
+.gfilter{display:flex;gap:8px;overflow-x:auto;padding:2px 0 8px;margin:0 -2px}
+.gfilter button{flex:0 0 auto;border:2px solid var(--line);background:var(--card);border-radius:99px;padding:8px 14px;font-weight:700;min-height:48px;display:flex;align-items:center;gap:6px}
+.gfilter button i{width:12px;height:12px;border-radius:50%;background:var(--blue);display:inline-block}
+.gfilter button.r i{background:var(--red)}
+.gfilter button.all i{background:var(--fg)}
+.gfilter button.on{background:var(--black);color:#fff;border-color:var(--black)}
+body.dark .gfilter button.on{background:var(--white);color:var(--black);border-color:var(--white)}
+.legend2{display:flex;gap:14px;font-size:.85rem;color:var(--muted);margin:2px 0 6px;flex-wrap:wrap}
+.legend2 span{display:flex;align-items:center;gap:6px}
+.legend2 i{width:12px;height:12px;border-radius:50%;display:inline-block}
+.gsec{margin:18px 0 6px;border-radius:18px;overflow:hidden;border:2px solid var(--blue)}
+.gsec.r{border-color:var(--red)}
+.gsec-h{background:var(--blue);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.gsec.r .gsec-h{background:var(--red)}
+.gsec-h .ci{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:24px;flex:0 0 44px}
+.gsec-h b{font-size:1.1rem;display:block}
+.gsec-h small{opacity:.9;font-size:.8rem}
+.gsec-h .cnt{margin-left:auto;background:#fff;color:var(--blue);border-radius:99px;padding:2px 10px;font-weight:900;font-size:.8rem;white-space:nowrap}
+.gsec.r .gsec-h .cnt{color:var(--red)}
+.gsec-warn{background:var(--red-l);color:var(--fg);padding:8px 14px;font-size:.85rem;font-weight:700}
+.gsec-body{padding:2px 10px 6px;background:var(--card)}
+.glist .gsec-body button{border-left:6px solid var(--blue)}
+.glist .gsec.r .gsec-body button{border-left-color:var(--red)}
+.glist .gsec .gi{background:var(--blue)}
+.glist .gsec.r .gi{background:var(--red)}
+.glist .gd.done{color:#1f9d4c}
+.gcat{display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;border-radius:99px;padding:4px 12px;font-size:.85rem;font-weight:700;margin-top:6px}
+.gcat.r{background:var(--red)}
+#gPlay.r .bimg{border-color:var(--red);box-shadow:0 0 0 6px var(--red-l)}
+#gPlay.r .bimg.txt{background:var(--red)}
+#gPlay.r .dots i.on{background:var(--red)}
+#gPlay.r .bigstep{color:var(--red)}
+#gPlay.r .steptext em{background:var(--red-l);color:var(--red)}
+body.dark #gPlay.r .steptext em{color:#ff9b96}
+#gPlay.r .vizcap b{color:var(--red)}
+.tip.warn{background:var(--red-l);border-left:5px solid var(--red)}
+.qopt.wrong{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
+.btn.red{background:var(--red);color:#fff}
+.btn.red:active{background:var(--red-d)}
+
+/* 단추 그림 */
+.viz{display:flex;gap:16px;align-items:center;justify-content:center;margin:4px 0 2px}
+.bimg{width:100px;height:100px;border-radius:26px;background:var(--sub);border:3px solid var(--blue);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--fg);gap:2px;box-shadow:0 0 0 6px var(--blue-l);animation:bp 1.6s infinite}
+@keyframes bp{50%{box-shadow:0 0 0 12px transparent}}
+.bimg svg{width:54px;height:54px}
+.bimg.tile{background:var(--dark);color:#fff;border-color:var(--dark)}
+.bimg.tile.word{font-weight:900;font-size:.95rem;text-align:center;padding:6px;line-height:1.2}
+.bimg.txt{width:auto;min-width:110px;height:60px;border-radius:16px;background:var(--blue);color:#fff;padding:0 18px;font-weight:900;font-size:1rem;border-color:var(--blue)}
+.bimg.green{background:#1f9d4c;border-color:#1f9d4c;color:#fff}
+.bimg.red{background:#d93025;border-color:#d93025;color:#fff}
+.mini svg{width:96px;height:176px;display:block}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pl 1.2s infinite}
+@keyframes pl{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.6);opacity:0}}
+.vizcap{text-align:center;font-size:.9rem;color:var(--muted);margin:6px 0 0}
+.vizcap b{color:var(--blue)}
+
+/* ===== 복습 ===== */
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{border-bottom:1px solid var(--line);padding:10px 6px;text-align:left;vertical-align:top}
+th{background:var(--dark);color:#fff}
+.check label{display:flex;gap:12px;align-items:center;padding:12px;border:2px solid var(--line);border-radius:14px;margin:8px 0;background:var(--card);min-height:60px}
+.check input{width:28px;height:28px;accent-color:var(--blue);flex:0 0 28px}
+.check label.on{border-color:var(--blue)}
+.qopt{display:block;width:100%;border:2px solid var(--line);background:var(--card);border-radius:14px;min-height:56px;margin:8px 0;font-weight:700;font-size:1.05rem}
+.qopt.right{background:var(--blue);color:#fff;border-color:var(--blue)}
+.qopt.wrong{background:var(--dark);color:#fff;border-color:var(--dark)}
+
+/* ===== 설정 ===== */
+.seg{display:flex;gap:8px;margin-top:8px}
+.seg button{flex:1;min-height:56px;border:2px solid var(--line);background:var(--card);border-radius:14px;font-weight:700}
+.seg button.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+
+/* ===== 하단 네비게이션 바 ===== */
+.bottomnav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--black);border-top:3px solid var(--blue);
+  display:flex;justify-content:space-around;align-items:stretch;padding:6px 4px calc(var(--bot) + 6px)}
+.bottomnav button{flex:1;border:0;background:transparent;color:#bdbdbd;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.72rem;font-weight:700;padding:4px 0;min-height:60px;border-radius:12px}
+.bottomnav button svg{width:26px;height:26px}
+.bottomnav button.on{color:#fff;background:var(--dark2)}
+.bottomnav button.home{color:#fff}
+.bottomnav button.home .hc{width:52px;height:52px;margin-top:-22px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;border:4px solid var(--black)}
+.bottomnav button.home .hc svg{width:28px;height:28px}
+
+.toast{position:fixed;left:50%;bottom:calc(var(--bot) + 96px);transform:translateX(-50%) translateY(20px);background:var(--blue);color:#fff;padding:12px 22px;border-radius:99px;font-weight:700;opacity:0;transition:.3s;z-index:40;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+
+<!-- 상단 바: 뒤로 / 제목 / 설정 단추 -->
+<header class="topbar">
+  <button class="tbtn hidden" id="backBtn" aria-label="뒤로 가기">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>뒤로
+  </button>
+  <h1 id="title">스마트폰 쉽게 익히기</h1>
+  <button class="tbtn settings" id="setBtn" aria-label="설정">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>설정
+  </button>
+</header>
+
+<main>
+
+<!-- ========== 홈 ========== -->
+<section class="view on" id="v-home">
+  <div class="hello">
+    <div style="font-size:1.25rem;font-weight:900">반갑습니다! 👋</div>
+    <p style="margin:.3em 0 0">하루 10분, <b>한 가지씩</b> 천천히 익혀 봐요.<br>틀려도 괜찮습니다.</p>
+    <div style="margin-top:12px;font-size:.85rem">나의 진도 <span id="pct">0</span>%</div>
+    <div class="bar"><i id="pbar"></i></div>
+  </div>
+  <div class="steps">
+    <button class="step wide" data-go="tour"><span class="n">먼저 해보기</span><span class="t">📱 내 폰 화면 알아보기</span><span class="d">홈 단추 · 네비게이션 바 · 설정 단추가 어디 있는지 찾아봐요</span></button>
+    <button class="step" data-go="terms"><span class="n">1단계</span><span class="t">용어 이해</span><span class="d">낱말 카드로 뜻 익히기</span></button>
+    <button class="step" data-go="practice"><span class="n">2단계</span><span class="t">기능 연습</span><span class="d">손가락 동작 6가지</span></button>
+    <button class="step" data-go="guide"><span class="n">3단계</span><span class="t">따라하기</span><span class="d">5개 분야 23가지</span></button>
+    <button class="step" data-go="review"><span class="n">4단계</span><span class="t">반복학습</span><span class="d">복습 일정 · 퀴즈 · 점검표</span></button>
+  </div>
+  <a class="card" href="/" target="_top" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;border-color:var(--blue)">
+    <span style="font-size:1.8rem">🖥️</span><span><b>친절한 지혜쌤의 생활AI 컴교실</b><br><small style="color:var(--muted)">컴퓨터 기초(마우스·타자·인터넷)도 함께 배워요 →</small></span>
+  </a>
+  <div class="card">
+    <b>약속 세 가지</b>
+    <p>① 틀려도 괜찮습니다 ② 하루에 한 가지만 ③ 순서를 소리 내어 말해 봅니다</p>
+  </div>
+</section>
+
+<!-- ========== 폰 화면 알아보기 ========== -->
+<section class="view" id="v-tour">
+  <h2>내 폰 화면 알아보기</h2>
+  <p class="lead">그림 속 폰의 아무 곳이나 눌러 보세요. 무엇인지 알려 드립니다.</p>
+  <div class="phone">
+    <div class="screen">
+      <button class="pz status" data-k="status"><span>9:41</span><span>📶 🔋 85%</span></button>
+      <div class="clock">9:41</div>
+      <div class="date">11월 16일 월요일</div>
+      <div class="apps">
+        <button class="pz app" data-k="phone"><span class="ic">📞</span>전화</button>
+        <button class="pz app" data-k="msg"><span class="ic">💬</span>메시지</button>
+        <button class="pz app" data-k="camera"><span class="ic">📷</span>카메라</button>
+        <button class="pz app" data-k="gallery"><span class="ic">🖼️</span>갤러리</button>
+        <button class="pz app" data-k="kakao"><span class="ic" style="background:#ffe600">🗨️</span>카카오톡</button>
+        <button class="pz app" data-k="clockapp"><span class="ic">⏰</span>시계</button>
+        <button class="pz app" data-k="store"><span class="ic">▶️</span>Play 스토어</button>
+        <button class="pz app" data-k="settings"><span class="ic" style="background:#3d3d3d;color:#fff">⚙️</span>설정</button>
+      </div>
+      <span class="navlabel" id="navlabel">▼ 네비게이션 바 (화면 맨 아래)</span>
+      <div class="navbar pz" data-k="navbar" role="group">
+        <button class="pz" data-k="recent" aria-label="최근 앱">|||</button>
+        <button class="pz" data-k="home" aria-label="홈 단추">◯</button>
+        <button class="pz" data-k="back" aria-label="뒤로 가기">〈</button>
+      </div>
+    </div>
+  </div>
+  <div class="card explain" id="explain">
+    <span class="tag">안내</span>
+    <p>아래 단추를 누르면 그 위치가 <b>노랗게 깜빡</b>입니다.</p>
+  </div>
+  <div class="legend" id="legend">
+    <button data-k="home">◯ 홈 단추</button>
+    <button data-k="navbar">▬ 네비게이션 바</button>
+    <button data-k="settings">⚙️ 설정 단추</button>
+    <button data-k="back">〈 뒤로 가기</button>
+    <button data-k="recent">||| 최근 앱</button>
+    <button data-k="status">📶 상태 표시줄</button>
+  </div>
+  <h3>찾기 게임</h3>
+  <div class="card">
+    <p id="findQ" style="font-size:1.1rem;font-weight:700">시작을 누르면 문제가 나옵니다.</p>
+    <button class="btn" id="findStart">찾기 게임 시작</button>
+  </div>
+</section>
+
+<!-- ========== 1단계 용어 ========== -->
+<section class="view" id="v-terms">
+  <h2>1단계 · 용어 이해</h2>
+  <p class="lead">카드를 누르면 뜻이 나옵니다. 하루 5개씩, 비유를 소리 내어 읽어 보세요.</p>
+  <div class="tabs" id="termTabs"></div>
+  <div class="flip" id="flip">
+    <div class="flip-in">
+      <div class="face front"><div class="w" id="tw"></div><small>눌러서 뜻 보기 👆</small></div>
+      <div class="face back"><div class="m" id="tm"></div><div class="h" id="th"></div></div>
+    </div>
+  </div>
+  <p class="counter"><span id="tc"></span> · 알았어요 <span class="known" id="tk">0</span>개</p>
+  <div class="row">
+    <button class="btn ghost" id="tPrev">◀ 이전</button>
+    <button class="btn" id="tKnow">알았어요 ✓</button>
+    <button class="btn ghost" id="tNext">다음 ▶</button>
+  </div>
+  <button class="btn dark" id="tSpeak" style="margin-top:10px">🔊 소리로 듣기</button>
+</section>
+
+<!-- ========== 2단계 연습 ========== -->
+<section class="view" id="v-practice">
+  <h2>2단계 · 기능 연습</h2>
+  <p class="lead">손가락 동작 6가지를 직접 해봅니다. 성공하면 파란 표시가 생깁니다.</p>
+
+  <div class="task" id="p-tap"><h3>① 톡 누르기 <span class="ok">성공 ✓</span></h3><p>손가락 끝으로 가볍게 한 번 누르세요.</p>
+    <div class="zone"><button class="target" id="tapT">여기를<br>톡!</button></div></div>
+
+  <div class="task" id="p-long"><h3>② 길게 누르기 <span class="ok">성공 ✓</span></h3><p>떼지 말고 2초 동안 꾹 누르고 있으세요.</p>
+    <div class="zone"><button class="target" id="longT"><span class="ring" id="ring" style="display:none"></span>꾹<br>누르기</button></div></div>
+
+  <div class="task" id="p-swipe"><h3>③ 옆으로 밀기 <span class="ok">성공 ✓</span></h3><p>카드를 누른 채로 왼쪽이나 오른쪽으로 쓱 미세요.</p>
+    <div class="zone" id="swipeZ"><div class="swipecard" id="swipeC">◀ 밀어 보세요 ▶</div></div></div>
+
+  <div class="task" id="p-scroll"><h3>④ 위아래로 내리기 <span class="ok">성공 ✓</span></h3><p>상자 안의 글을 손가락으로 위로 밀어 끝까지 읽으세요.</p>
+    <div class="zone scrollbox" id="scrollZ">
+      <p>스마트폰에서 긴 글은 손가락을 <b>위로 밀어서</b> 아래 내용을 봅니다.</p><p>신문을 아래로 넘겨 읽는 것과 같아요.</p><p>천천히 계속 밀어 보세요.</p><p>조금만 더…</p><p>거의 다 왔습니다!</p><p>🎉 끝까지 잘 내려오셨어요!</p>
+    </div></div>
+
+  <div class="task" id="p-drag"><h3>⑤ 끌어다 놓기 <span class="ok">성공 ✓</span></h3><p>파란 공을 누른 채로 오른쪽 상자까지 옮기세요.</p>
+    <div class="zone" style="min-height:150px" id="dragZ"><div class="drop" id="drop">여기에<br>놓기</div><div class="dragball" id="ball">●</div></div></div>
+
+  <div class="task" id="p-pinch"><h3>⑥ 두 손가락으로 크게 보기 <span class="ok">성공 ✓</span></h3><p>엄지와 검지를 그림 위에 대고 벌리세요. 컴퓨터에서는 ＋ 단추를 누르세요.</p>
+    <div class="zone" id="pinchZ" style="min-height:170px"><span class="pinchimg" id="pinchI">🌻</span></div>
+    <div class="row" style="margin-top:8px"><button class="btn ghost" id="zOut">－ 작게</button><button class="btn ghost" id="zIn">＋ 크게</button></div></div>
+
+  <h3>꼭 알아야 할 버튼</h3>
+  <table>
+    <tr><th>버튼</th><th>위치</th><th>하는 일</th></tr>
+    <tr><td><b>전원</b></td><td>폰 오른쪽 옆면</td><td>짧게: 화면 켜기·끄기<br>길게: 끄기·다시 시작</td></tr>
+    <tr><td><b>음량</b></td><td>전원 버튼 옆</td><td>소리 크게·작게</td></tr>
+    <tr><td><b>네비게이션 바</b></td><td>화면 맨 아래</td><td>||| 최근 앱 · ◯ 홈 · 〈 뒤로</td></tr>
+  </table>
+  <div class="tip">길을 잃으면 <b>◯ 홈 단추</b>를 누르세요. 언제든 처음 화면으로 돌아옵니다.</div>
+</section>
+
+<!-- ========== 3단계 따라하기 ========== -->
+<section class="view" id="v-guide">
+  <div id="gList">
+    <h2>3단계 · 따라하기</h2>
+    <p class="lead">분야를 골라 한 단계씩 따라 하세요. 내 폰을 옆에 두고 함께 눌러 보세요. 메뉴 이름은 폰·앱 버전에 따라 조금 다를 수 있어요.</p>
+    <div class="gfilter" id="gfilter"></div>
+    <div class="legend2"><span><i style="background:var(--blue)"></i>파랑 = 일상 기능</span><span><i style="background:var(--red)"></i>빨강 = 돈·개인정보 주의</span></div>
+    <div class="glist" id="glist"></div>
+  </div>
+  <div id="gPlay" style="display:none">
+    <span class="gcat" id="gCat"></span>
+    <h2 id="gTitle" style="margin-top:.3em"></h2>
+    <div class="player">
+      <div class="dots" id="gDots"></div>
+      <div class="bigstep" id="gNum"></div>
+      <div id="gViz"></div>
+      <div class="steptext" id="gText"></div>
+      <div class="tip" id="gTip" style="display:none;margin:0 0 12px"></div>
+      <div class="row">
+        <button class="btn ghost" id="gPrev">◀ 이전</button>
+        <button class="btn" id="gNext">다음 ▶</button>
+      </div>
+      <button class="btn dark" id="gSpeak" style="margin-top:10px">🔊 다시 듣기</button>
+    </div>
+    <div class="tip"><b>따라하기 요령</b> — 처음엔 보면서, 두 번째는 반만 보면서, 세 번째는 보지 않고 해보세요.</div>
+  </div>
+</section>
+
+<!-- ========== 4단계 복습 ========== -->
+<section class="view" id="v-review">
+  <h2>4단계 · 반복학습</h2>
+  <p class="lead">1일 → 3일 → 7일 뒤에 다시 해보면 오래 기억됩니다.</p>
+  <table>
+    <tr><th>언제</th><th>무엇을</th><th>방법</th></tr>
+    <tr><td>배운 날</td><td>새 기능 1가지</td><td>순서 보며 3번</td></tr>
+    <tr><td>다음 날</td><td>어제 배운 것</td><td>보지 않고 1번</td></tr>
+    <tr><td>3일 뒤</td><td>용어 5개 + 기능 1가지</td><td>뜻 가리고 말하기</td></tr>
+    <tr><td>7일 뒤</td><td>그 주에 배운 것 전부</td><td>점검표로 확인</td></tr>
+  </table>
+
+  <h3>용어 퀴즈</h3>
+  <div class="card" id="quiz">
+    <p style="font-weight:700">뜻을 보고 알맞은 용어를 고르세요.</p>
+    <button class="btn" id="qStart">퀴즈 시작 (5문제)</button>
+  </div>
+
+  <h3>자가 점검표</h3>
+  <p class="lead">혼자 할 수 있으면 체크하세요. 체크가 안 된 것은 다음 주에 다시!</p>
+  <div class="check" id="checklist"></div>
+</section>
+
+<!-- ========== 설정 ========== -->
+<section class="view" id="v-settings">
+  <h2>설정</h2>
+  <p class="lead">내 눈과 귀에 맞게 바꿔 보세요. 진짜 폰의 ⚙️ 설정도 이렇게 생겼어요.</p>
+  <div class="card"><b>글자 크기</b>
+    <div class="seg" id="sFont"><button data-v="18">보통</button><button data-v="21">크게</button><button data-v="24">아주 크게</button></div></div>
+  <div class="card"><b>화면 색</b>
+    <div class="seg" id="sTheme"><button data-v="light">☀️ 밝게</button><button data-v="dark">🌙 어둡게</button></div></div>
+  <div class="card"><b>소리로 읽어 주기</b>
+    <div class="seg" id="sVoice"><button data-v="on">켜기</button><button data-v="off">끄기</button></div></div>
+  <div class="card"><b>처음부터 다시</b><p class="lead" style="margin:.3em 0 .6em">진도와 체크 기록을 모두 지웁니다.</p>
+    <button class="btn red" id="sReset">진도 초기화</button></div>
+</section>
+
+</main>
+
+<!-- 하단 네비게이션 바 -->
+<nav class="bottomnav" id="nav">
+  <button data-go="terms"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 5h16M4 12h16M4 19h10"/></svg>용어</button>
+  <button data-go="practice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V5a2 2 0 0 1 4 0v6m0-2a2 2 0 0 1 4 0v4a7 7 0 0 1-7 7h-1a5 5 0 0 1-4-2l-2.5-3.5a1.8 1.8 0 0 1 2.8-2.2L9 14"/></svg>연습</button>
+  <button data-go="home" class="home on"><span class="hc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg></span>홈</button>
+  <button data-go="guide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4l14 8-14 8z"/></svg>따라하기</button>
+  <button data-go="review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"/></svg>복습</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- 저장 (안전하게) ---------- */
+const store={get(k,d){try{const v=localStorage.getItem('sp_'+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem('sp_'+k,JSON.stringify(v))}catch(e){}}};
+let S=store.get('state',{font:18,theme:'light',voice:'on',known:[],practice:[],guides:[],checks:[]});
+const save=()=>{store.set('state',S);progress()};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),1600)}
+function speak(t){if(S.voice!=='on')return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/<[^>]+>/g,''));u.lang='ko-KR';u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
+
+/* ---------- 화면 이동 ---------- */
+const titles={home:'스마트폰 쉽게 익히기',tour:'내 폰 화면 알아보기',terms:'1단계 용어 이해',practice:'2단계 기능 연습',guide:'3단계 따라하기',review:'4단계 반복학습',settings:'설정'};
+let hist=['home'];
+function go(v,push=true){
+  if(v==='guide'){showGuideList()}
+  $$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));
+  $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));
+  $('#title').textContent=titles[v];
+  if(push&&hist[hist.length-1]!==v)hist.push(v);
+  if(v==='home')hist=['home'];
+  $('#backBtn').classList.toggle('hidden',v==='home');
+  window.scrollTo(0,0);
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});
+$('#backBtn').onclick=()=>{
+  if(!$('#v-guide').classList.contains('on')||$('#gPlay').style.display==='none'){hist.pop();go(hist[hist.length-1]||'home',false)}
+  else showGuideList();
+};
+$('#setBtn').onclick=()=>go('settings');
+
+/* ---------- 진도 ---------- */
+function progress(){
+  const total=TERMS.length+6+GUIDES.length+CHECKS.length;
+  const done=S.known.length+S.practice.length+S.guides.length+S.checks.length;
+  const p=Math.round(done/total*100);$('#pct').textContent=p;$('#pbar').style.width=p+'%';
+}
+
+/* ---------- 폰 구조 ---------- */
+const PARTS={
+  home:['◯ 홈 단추','화면 맨 아래 <b>네비게이션 바 가운데</b>에 있는 동그라미입니다. 어디에 있든 누르면 <b>처음 화면(홈 화면)</b>으로 돌아옵니다. 길을 잃으면 이것부터 누르세요.'],
+  back:['〈 뒤로 가기','네비게이션 바의 <b>오른쪽</b>에 있습니다. 바로 전 화면으로 한 칸 돌아갑니다. 잘못 눌렀을 때 누르세요.'],
+  recent:['||| 최근 앱','네비게이션 바의 <b>왼쪽</b>에 있습니다. 방금 쓴 앱들이 카드처럼 보이고, 위로 밀면 닫힙니다.'],
+  navbar:['▬ 네비게이션 바','<b>화면 맨 아래</b>의 가로 줄입니다. 왼쪽부터 ||| 최근 앱 · ◯ 홈 · 〈 뒤로 가기, 세 단추가 있습니다. 안 보이면 화면 맨 아래에서 위로 쓸어 올리세요.'],
+  settings:['⚙️ 설정 단추','<b>톱니바퀴 모양</b> 아이콘입니다. 글자 크기, 소리, 와이파이 등 폰을 내 몸에 맞게 바꾸는 곳입니다. 이 앱도 <b>오른쪽 위 파란 설정 단추</b>로 같은 연습을 할 수 있어요.'],
+  status:['📶 상태 표시줄 (알림창)','화면 <b>맨 위</b> 줄입니다. 시간·배터리·신호가 보이고, 여기서 <b>아래로 내리면</b> 알림창과 빠른 설정(와이파이·손전등)이 나옵니다.'],
+  phone:['📞 전화','전화를 걸고 받는 앱입니다.'],msg:['💬 메시지','문자를 주고받는 앱입니다.'],
+  camera:['📷 카메라','사진과 동영상을 찍는 앱입니다.'],gallery:['🖼️ 갤러리','찍은 사진이 모이는 앨범입니다.'],
+  kakao:['🗨️ 카카오톡','가족·친구와 메시지와 사진을 주고받는 앱입니다.'],clockapp:['⏰ 시계','알람을 맞추는 앱입니다.'],
+  store:['▶️ Play 스토어','앱을 안전하게 설치하는 곳입니다. 앱은 여기서만 받으세요.']
+};
+let finding=null,findSet=[],findIdx=0;
+function highlight(k){
+  $$('.pz').forEach(x=>x.classList.remove('hl'));
+  const el=document.querySelector('.screen [data-k="'+k+'"]');if(el)el.classList.add('hl');
+  $('#navlabel').classList.toggle('on',k==='navbar'||k==='home'||k==='back'||k==='recent');
+  $$('#legend button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));
+  const p=PARTS[k];$('#explain').innerHTML='<span class="tag">'+p[0]+'</span><p>'+p[1]+'</p>';speak(p[0]+'. '+p[1]);
+}
+$('#legend').onclick=e=>{const b=e.target.closest('button');if(b)highlight(b.dataset.k)};
+$('.screen').addEventListener('click',e=>{
+  const el=e.target.closest('[data-k]');if(!el)return;e.stopPropagation();
+  const k=el.dataset.k;
+  if(finding){
+    if(k===finding){toast('정답입니다! 👏');speak('정답입니다');findIdx++;nextFind()}
+    else{toast('다시 찾아보세요');speak('다시 찾아보세요')}
+    return;
+  }
+  highlight(k);
+});
+function nextFind(){
+  if(findIdx>=findSet.length){finding=null;$('#findQ').textContent='🎉 모두 찾았습니다! 잘하셨어요.';$('#findStart').textContent='한 번 더 하기';return}
+  finding=findSet[findIdx];$$('.pz').forEach(x=>x.classList.remove('hl'));
+  const q='('+(findIdx+1)+'/'+findSet.length+') 그림 속 폰에서 「'+PARTS[finding][0]+'」을(를) 찾아 누르세요.';
+  $('#findQ').textContent=q;speak(q);
+}
+$('#findStart').onclick=()=>{findSet=['home','settings','navbar','back','status','recent'].sort(()=>Math.random()-.5);findIdx=0;nextFind();$('.phone').scrollIntoView({behavior:'smooth',block:'center'})};
+
+/* ---------- 용어 ---------- */
+const TERMS=[
+ ['화면과 기본','홈 화면','켜면 처음 보이는 기본 화면','우리 집 현관'],
+ ['화면과 기본','앱','한 가지 일을 하는 프로그램 (전화, 카메라, 시계)','기능별 가전제품'],
+ ['화면과 기본','아이콘','앱을 여는 작은 그림 단추','문에 붙은 문패'],
+ ['화면과 기본','알림창','화면 맨 위에서 아래로 내리면 나오는 소식판','우편함'],
+ ['화면과 기본','빠른 설정','알림창에 있는 와이파이·손전등 켜고 끄는 단추','벽에 붙은 스위치'],
+ ['화면과 기본','설정','글자 크기·소리 등 폰을 내 몸에 맞추는 곳 (톱니바퀴)','두꺼비집'],
+ ['화면과 기본','잠금 화면','남이 못 쓰게 막아 둔 처음 화면','현관 도어락'],
+ ['인터넷과 연결','와이파이','집·카페에서 쓰는 무선 인터넷 (데이터 요금 안 나감)','수도꼭지'],
+ ['인터넷과 연결','데이터','통신사로 쓰는 인터넷 (쓴 만큼 요금)','생수병'],
+ ['인터넷과 연결','블루투스','선 없이 이어폰·스피커를 연결하는 기능','보이지 않는 연결선'],
+ ['인터넷과 연결','다운로드','인터넷에서 내 폰으로 받아 오기','택배 받기'],
+ ['인터넷과 연결','업로드','내 폰에서 인터넷으로 올리기','택배 보내기'],
+ ['인터넷과 연결','링크','누르면 다른 화면으로 이동하는 글자','연결된 문'],
+ ['인터넷과 연결','업데이트','폰이나 앱을 새 버전으로 고치는 것','집 수리'],
+ ['사진·메시지·보안','갤러리','찍은 사진·동영상이 모이는 곳','앨범'],
+ ['사진·메시지·보안','캡처','지금 보이는 화면을 사진으로 저장','화면 복사'],
+ ['사진·메시지·보안','첨부','메시지에 사진·파일을 붙여 보내기','편지에 사진 동봉'],
+ ['사진·메시지·보안','계정','내가 누구인지 알리는 이름표','회원증'],
+ ['사진·메시지·보안','비밀번호','계정을 여는 나만의 열쇠','금고 번호'],
+ ['사진·메시지·보안','인증번호','본인 확인용으로 문자로 오는 숫자 — 남에게 절대 알려 주지 않기','일회용 출입증'],
+ ['사진·메시지·보안','스미싱','가짜 문자로 링크를 누르게 해 돈·정보를 빼는 사기','문자로 오는 보이스피싱'],
+ ['인증·결제','구글 계정','Play 스토어·유튜브·지메일을 쓰는 이름표 (○○○@gmail.com)','스마트폰 주민등록증'],
+ ['인증·결제','PASS','통신사가 만든 본인 확인 앱 (SKT·KT·U+ 각각 따로 있음)','통신사 민원 창구'],
+ ['인증·결제','인증서','인터넷에서 “나 맞아요”를 증명하는 전자 도장','인감도장'],
+ ['인증·결제','모바일 신분증','폰에 넣어 다니는 주민등록증·운전면허증','지갑 속 신분증'],
+ ['인증·결제','간편결제(페이)','카드를 폰에 넣어 두고 지문·비밀번호로 계산하는 것','폰 속 지갑'],
+ ['인증·결제','결제 비밀번호','페이로 계산할 때 쓰는 숫자 6자리 (남에게 절대 알려 주지 않기)','지갑 자물쇠'],
+ ['사진 편집','편집(연필)','사진 아래 연필 단추. 자르기·색·글자 넣기를 하는 곳','사진관 작업대'],
+ ['사진 편집','꾸미기(스마일 연필)','스마일 얼굴에 연필 모양 단추. 그리기·스티커·글자','사진에 붙이는 스티커와 색연필'],
+ ['사진 편집','다른 파일로 저장','원본은 두고 고친 사진을 한 장 더 만드는 저장','복사본 만들기'],
+ ['사진 편집','원본 복원','고친 사진을 처음 찍은 모습으로 되돌리기','지우개로 싹 지우기'],
+ ['사진 편집','콜라주','여러 장의 사진을 한 장에 모은 것','사진 액자 모음'],
+ ['사진 편집','GIF(움짤)','몇 초짜리 움직이는 짧은 그림','움직이는 사진']
+];
+const CATS=['전체',...new Set(TERMS.map(t=>t[0]))];
+let cat='전체',ti=0;
+const list=()=>TERMS.map((t,i)=>i).filter(i=>cat==='전체'||TERMS[i][0]===cat);
+function renderTabs(){$('#termTabs').innerHTML=CATS.map(c=>'<button class="'+(c===cat?'on':'')+'" data-c="'+c+'">'+c+'</button>').join('')}
+function renderTerm(){
+  const L=list();ti=(ti+L.length)%L.length;const i=L[ti],t=TERMS[i];
+  $('#flip').classList.remove('on');
+  setTimeout(()=>{$('#tw').textContent=t[1];$('#tm').textContent=t[2];$('#th').textContent='이렇게 생각하세요 → '+t[3]},150);
+  $('#tc').textContent=(ti+1)+' / '+L.length;$('#tk').textContent=S.known.length;
+  $('#tKnow').textContent=S.known.includes(i)?'알았어요 ✓ (완료)':'알았어요 ✓';
+}
+$('#termTabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;cat=b.dataset.c;ti=0;renderTabs();renderTerm()};
+$('#flip').onclick=()=>{$('#flip').classList.toggle('on');if($('#flip').classList.contains('on')){const t=TERMS[list()[ti]];speak(t[1]+'. '+t[2]+'. '+t[3]+'와 같아요')}};
+$('#tPrev').onclick=()=>{ti--;renderTerm()};$('#tNext').onclick=()=>{ti++;renderTerm()};
+$('#tKnow').onclick=()=>{const i=list()[ti];if(!S.known.includes(i)){S.known.push(i);save();toast('잘하셨어요! 👍')}ti++;renderTerm()};
+$('#tSpeak').onclick=()=>{const t=TERMS[list()[ti]];const v=S.voice;S.voice='on';speak(t[1]+'. '+t[2]+'. '+t[3]+'와 같아요');S.voice=v};
+
+/* ---------- 연습 ---------- */
+function done(id,msg){$('#'+id).classList.add('done');if(!S.practice.includes(id)){S.practice.push(id);save()}toast(msg||'성공! 👏');speak(msg||'성공')}
+$('#tapT').onclick=()=>done('p-tap','톡 누르기 성공!');
+(()=>{let tm,st;const b=$('#longT'),r=$('#ring');
+ const start=e=>{e.preventDefault();st=Date.now();r.style.display='block';r.animate([{transform:'rotate(0)'},{transform:'rotate(720deg)'}],{duration:2000});tm=setTimeout(()=>{r.style.display='none';done('p-long','길게 누르기 성공!')},2000)};
+ const end=()=>{clearTimeout(tm);r.style.display='none';if(st&&Date.now()-st<2000)toast('조금 더 오래 누르세요');st=0};
+ b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,end));
+ b.addEventListener('contextmenu',e=>e.preventDefault());})();
+(()=>{let x0=null;const z=$('#swipeZ'),c=$('#swipeC');
+ z.addEventListener('pointerdown',e=>{x0=e.clientX;z.setPointerCapture(e.pointerId)});
+ z.addEventListener('pointermove',e=>{if(x0!==null)c.style.transform='translateX('+(e.clientX-x0)+'px)'});
+ z.addEventListener('pointerup',e=>{if(x0===null)return;const d=e.clientX-x0;x0=null;c.style.transform='';if(Math.abs(d)>70){c.textContent=d<0?'◀ 왼쪽으로 밀었어요!':'오른쪽으로 밀었어요! ▶';done('p-swipe','밀기 성공!')}else toast('조금 더 길게 밀어 보세요')});})();
+$('#scrollZ').addEventListener('scroll',e=>{const z=e.target;if(z.scrollTop+z.clientHeight>=z.scrollHeight-6&&!$('#p-scroll').classList.contains('done'))done('p-scroll','내리기 성공!')});
+(()=>{const ball=$('#ball'),zone=$('#dragZ'),drop=$('#drop');let on=false,ox,oy;
+ ball.addEventListener('pointerdown',e=>{on=true;ball.setPointerCapture(e.pointerId);const r=ball.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top});
+ ball.addEventListener('pointermove',e=>{if(!on)return;const z=zone.getBoundingClientRect();ball.style.left=Math.max(0,Math.min(z.width-70,e.clientX-z.left-ox))+'px';ball.style.top=Math.max(0,Math.min(z.height-70,e.clientY-z.top-oy))+'px'});
+ ball.addEventListener('pointerup',()=>{on=false;const a=ball.getBoundingClientRect(),b=drop.getBoundingClientRect();const cx=a.left+35,cy=a.top+35;
+  if(cx>b.left&&cx<b.right&&cy>b.top&&cy<b.bottom){ball.style.left=(drop.offsetLeft+10)+'px';ball.style.top=(drop.offsetTop+10)+'px';done('p-drag','끌어다 놓기 성공!')}});})();
+(()=>{let sc=1;const img=$('#pinchI'),z=$('#pinchZ'),pts=new Map();let d0=0,s0=1;
+ const apply=()=>{sc=Math.max(.5,Math.min(3,sc));img.style.transform='scale('+sc+')';if(sc>=1.8&&!$('#p-pinch').classList.contains('done'))done('p-pinch','크게 보기 성공!')};
+ const dist=()=>{const [a,b]=[...pts.values()];return Math.hypot(a.x-b.x,a.y-b.y)};
+ z.addEventListener('pointerdown',e=>{pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2){d0=dist();s0=sc}});
+ z.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2&&d0){sc=s0*dist()/d0;apply()}});
+ ['pointerup','pointercancel','pointerleave'].forEach(ev=>z.addEventListener(ev,e=>{pts.delete(e.pointerId);if(pts.size<2)d0=0}));
+ $('#zIn').onclick=()=>{sc+=.4;apply()};$('#zOut').onclick=()=>{sc-=.4;apply()};})();
+
+/* ---------- 따라하기 ---------- */
+const GUIDES=[
+ ['🔠','글자 크게 하기 (가장 먼저)',['<em>설정</em>(톱니바퀴 모양)을 누릅니다.','<em>디스플레이</em>를 누릅니다.','<em>글자 크기와 스타일</em>을 누릅니다.','막대를 오른쪽으로 밀어 글자를 키웁니다.','<em>〈 뒤로 가기</em>로 나옵니다.']],
+ ['📞','전화 걸기·받기',['초록색 <em>전화</em> 아이콘을 누릅니다.','<em>키패드</em>에서 번호를 누르거나, <em>연락처</em>에서 이름을 고릅니다.','초록색 전화 단추를 누릅니다.','끊을 때는 <em>빨간 단추</em>를 누릅니다.','전화가 오면 초록 동그라미를 <em>옆으로 밀어</em> 받습니다.']],
+ ['💬','문자 보내기',['<em>메시지</em> 아이콘을 누릅니다.','아래 <em>연필 모양</em>을 누르고 받는 사람을 고릅니다.','글자 칸을 누르면 자판이 나옵니다. 내용을 씁니다.','<em>마이크</em>를 누르고 말하면 글자로 바뀝니다.','<em>종이비행기</em>(보내기)를 누릅니다.']],
+ ['📷','사진 찍고 보기',['<em>카메라</em>를 누릅니다.','찍을 것을 화면에 담고 <em>하얀 동그라미</em>를 누릅니다.','구석의 <em>작은 사진</em>을 누르면 방금 찍은 사진이 나옵니다.','나중에는 <em>갤러리</em>에서 모두 볼 수 있습니다.']],
+ ['🗨️','카카오톡으로 사진 보내기',['<em>카카오톡</em>을 열고 보낼 사람의 대화방을 엽니다.','글자 칸 왼쪽 <em>＋</em>를 누릅니다.','<em>앨범</em>을 누르고 보낼 사진을 고릅니다.','<em>전송</em>을 누릅니다.']],
+ ['📶','와이파이 연결하기',['화면 <em>맨 위에서 아래로</em> 내려 빠른 설정을 엽니다.','부채꼴 모양 <em>Wi-Fi</em> 글자를 길게 누릅니다.','목록에서 집·가게의 와이파이 이름을 고릅니다.','비밀번호를 넣고 <em>연결</em>을 누릅니다.']],
+ ['⏰','알람 맞추기',['<em>시계</em> 앱을 누르고 <em>알람</em>을 누릅니다.','<em>＋</em>를 누르고 시간을 위아래로 밀어 맞춥니다.','반복할 요일을 누르고 <em>저장</em>을 누릅니다.']],
+ ['🛍️','구글(Play 스토어) 계정 확인하기',['<em>Play 스토어</em>를 누릅니다.','오른쪽 위 <em>동그란 프로필</em>을 누릅니다.','내 이름 아래 <em>이메일 주소</em>가 내 구글 계정입니다. 수첩에 적어 둡니다.','다른 방법: <em>설정 → Google</em>을 눌러도 같은 이메일이 보입니다.'],'구글 계정은 Play 스토어·유튜브·지메일에 함께 쓰입니다.','life'],
+ ['🔑','구글 비밀번호 바꾸기',['<em>설정</em>(톱니바퀴)을 누릅니다.','<em>Google</em> → 내 이름 → <em>Google 계정 관리</em>를 누릅니다.','<em>보안 및 로그인</em>을 누릅니다.','“Google에 로그인하는 방법”에서 <em>비밀번호</em>를 누릅니다.','새 비밀번호를 두 번 넣고 <em>비밀번호 변경</em>을 누릅니다.'],'잊었다면 로그인 화면의 “비밀번호를 잊으셨나요?”로 계정을 복구합니다.','life'],
+ ['🪪','PASS 앱 설치와 인증서 발급',['Play 스토어에서 <em>PASS</em>를 검색합니다.','<em>내 통신사</em>에 맞는 앱(PASS by SKT·KT·U+)을 설치합니다.','앱을 열고 본인확인 후 <em>PASS 비밀번호 6자리</em>나 지문을 등록합니다.','첫 화면에서 <em>인증서</em>를 누릅니다.','약관에 동의하고 비밀번호나 지문으로 확인하면 <em>발급 완료</em>입니다.'],'인증서는 3년간 무료입니다. 앱을 다시 깔거나 폰을 바꾸면 새로 발급받아요.','life'],
+ ['🆔','PASS에 신분증 등록하기',['PASS 앱 첫 화면에서 <em>모바일신분증</em>을 누릅니다.','<em>주민등록증</em> 또는 <em>운전면허증</em>을 고릅니다.','주민등록증: 주민번호와 <em>발급 날짜</em>를 넣습니다. 운전면허증: 실물을 <em>카메라로 찍습니다</em>.','화면 안내대로 <em>본인 확인과 얼굴 인식</em>을 합니다.','등록 후 병원·은행 등에서 <em>QR코드나 신분증 화면</em>을 보여 줍니다.'],'실물 신분증만 있으면 재발급 없이 등록됩니다. 본인 명의 폰에서만 됩니다.','life'],
+ ['💳','삼성 월렛 카드 등록',['준비: <em>삼성 계정 로그인</em>, 본인 명의 폰과 카드, 모바일 데이터 켜기.','<em>삼성 월렛</em> → <em>결제 카드</em> → <em>결제 카드 추가</em>를 누릅니다.','카드 앞면을 <em>카메라로 찍거나</em> 번호를 직접 넣습니다.','약관에 동의하고 문자로 <em>본인 인증</em>을 합니다.','<em>결제 비밀번호 6자리</em>, 지문, 서명을 등록하면 끝입니다.'],'결제 비밀번호는 잊으면 찾을 수 없고, 3번 이상 틀리면 등록한 카드가 모두 지워집니다.','life'],
+ ['📲','삼성 월렛으로 결제하기',['화면 <em>맨 아래(홈 단추 쪽)에서 위로</em> 쓸어 올립니다.','옆으로 밀어 쓸 <em>카드</em>를 고릅니다.','<em>지문</em>을 대거나 결제 비밀번호를 넣습니다.','폰 <em>뒷면을 카드 단말기에</em> 갖다 대고 알림이 올 때까지 기다립니다.'],'결제가 끝나면 알림으로 금액을 꼭 확인하세요.','life'],
+ ['🟡','카카오페이 시작과 계좌 연결',['카카오톡 아래 <em>···(더보기)</em> → <em>pay</em>를 누릅니다. (카카오페이 앱도 됩니다)','처음이면 본인 인증 후 <em>비밀번호 6자리</em>를 만듭니다.','<em>계좌 연결하기</em>를 누르고 은행을 고릅니다.','계좌번호를 넣고 화면 안내대로 <em>인증</em>합니다.','“계좌 연결 완료”가 나오면 <em>확인</em>을 누릅니다.'],'메뉴 위치는 카카오톡 버전에 따라 조금 다를 수 있습니다.','life'],
+ ['💸','카카오페이 결제·송금',['매장: 카카오페이에서 <em>결제</em> 탭을 누릅니다.','지문이나 비밀번호를 넣고 <em>바코드·QR코드</em>를 점원에게 보여 줍니다.','송금: 보낼 사람 대화방 → <em>＋</em> → <em>송금</em>을 누릅니다.','금액과 <em>받는 사람 이름</em>을 다시 확인하고 보내기 → 비밀번호를 넣습니다.'],'급하게 돈을 보내 달라는 문자는 꼭 전화로 확인! 분실·도용 신고 1833-7483(24시간)','life'],
+ ['✏️','연필로 편집 시작 (자르기·필터·밝기)',['<em>갤러리</em>에서 사진을 하나 누릅니다.','아래 <em>연필</em> 모양(편집)을 누릅니다.','<em>자르기</em>: 네 모서리를 누른 채 안쪽으로 끌어 필요한 부분만 남깁니다.','<em>필터</em>(동그라미 세 개)에서 마음에 드는 색감을 고릅니다.','<em>밝기</em>(해 모양)에서 막대를 좌우로 밀어 조절합니다.','오른쪽 위 <em>저장</em>을 누릅니다.'],'그냥 저장하면 원본 위에 덮어씁니다. 원본을 지키려면 “다른 파일로 저장”을 쓰세요.','photo'],
+ ['🙂','스마일 연필로 꾸미기 (그리기·글자·스티커)',['편집 화면 아래 <em>스마일 얼굴에 연필</em>이 있는 단추(꾸미기)를 누릅니다.','<em>그리기</em>: 펜과 색을 고르고 손가락으로 그립니다.','<em>스티커</em>: 하나 골라 두 손가락으로 크기를 바꾸고 끌어서 옮깁니다.','<em>텍스트(T)</em>: 글자를 쓰고 색과 크기를 고릅니다.','잘못 넣은 것은 눌러서 <em>휴지통</em>으로 지웁니다.'],'다 꾸몄으면 저장하거나, 원본을 남기려면 “다른 파일로 저장”을 씁니다.','photo'],
+ ['🐶','내 사진으로 스티커 만들기',['<em>갤러리</em>에서 사진을 엽니다.','스티커로 만들 대상(사람·꽃·강아지) 위를 <em>꾹 길게</em> 누릅니다.','대상만 오려져 반짝이면 <em>스티커로 저장</em>을 누릅니다.','테두리 스타일을 고르고 <em>완료</em>를 누릅니다.','이제 꾸미기 → <em>스티커</em> 목록에서 다른 사진에 붙일 수 있습니다.'],'AI가 자동으로 오려내므로 원하는 모양과 조금 다를 수 있어요.','photo'],
+ ['💾','원본 지키고 다른 파일로 저장',['갤러리에서 사진을 열고 <em>연필(편집)</em>을 누릅니다.','원하는 대로 편집합니다.','저장을 누르지 말고 오른쪽 위 <em>⋮ (점 세 개)</em>를 누릅니다.','<em>다른 파일로 저장</em>을 누릅니다.','갤러리에 <em>원본과 편집본 두 장</em>이 있는지 확인합니다.'],'처음 배울 때는 항상 이 방법으로 저장하면 안심입니다.','photo'],
+ ['↩️','편집한 사진 원본으로 되돌리기',['갤러리에서 편집했던 사진을 엽니다.','<em>연필(편집)</em>을 누릅니다.','<em>원본 복원</em>을 누릅니다.','확인 창에서 <em>원본 복원</em>을 한 번 더 누릅니다.'],'동영상도 같은 방법으로 원본으로 되돌릴 수 있어요.','photo'],
+ ['✨','만들기 메뉴 사용하기',['갤러리에서 사진 하나를 <em>길게 눌러</em> 선택 모드를 켭니다.','함께 쓸 사진들을 <em>톡톡</em> 눌러 체크합니다.','오른쪽 아래 <em>만들기</em>(또는 ⋮ 더보기 → 만들기)를 누릅니다.','<em>콜라주 · GIF · 영상(영화)</em> 중 만들 것을 고릅니다.'],'만들기로 만든 결과는 새 파일로 저장되어 원본은 그대로 있습니다.','photo'],
+ ['🖼️','콜라주 만들기',['사진을 여러 장 선택하고 <em>만들기 → 콜라주</em>를 누릅니다.','아래에서 <em>배치(레이아웃)</em>를 고릅니다.','<em>배경</em> 색과 모서리 둥글기를 정합니다.','<em>비율</em>을 고릅니다. (정사각형 1:1, 세로 9:16 등)','사진 한 칸을 누르면 <em>교체·삭제·편집</em>할 수 있습니다.','<em>저장</em>을 누르면 새 사진으로 갤러리에 생깁니다.'],'여행·가족 사진 정리에 좋아요. 최신 폰은 사진을 자유롭게 겹쳐 놓을 수도 있습니다.','photo'],
+ ['🎬','영상 만들기 (사진 이어 붙이기)',['영상에 넣을 사진·동영상을 <em>여러 개 선택</em>합니다.','<em>만들기 → 영화(영상 만들기)</em>를 누릅니다. 최신 폰은 <em>스튜디오</em> 화면이 열립니다.','아래 타임라인에서 장면을 끌어 <em>순서</em>를 바꾸고, 양 끝을 밀어 <em>길이</em>를 줄입니다.','<em>음악</em>, <em>글자(자막)</em>, 전환 효과를 넣습니다.','▶로 미리 보고 <em>저장(내보내기)</em>를 누릅니다.'],'움짤(GIF): 동영상을 재생하고 위쪽 GIF 단추 → 구간 고르기 → 저장.','photo']
+];
+let gi=0,gs=0;
+const GCATS=[
+ {k:'basic',n:'기본 설정',ic:'⚙️',d:'글자 크기 · 와이파이 · 알람',idx:[0,5,6]},
+ {k:'talk',n:'전화 · 메시지',ic:'📞',d:'전화 · 문자 · 카카오톡 사진',idx:[1,2,4]},
+ {k:'photo',n:'사진 찍기 · 편집',ic:'📷',d:'카메라 · 갤러리 편집 · 콜라주 · 영상',idx:[3,15,16,17,18,19,20,21,22]},
+ {k:'account',n:'계정 · 본인인증',ic:'🔐',d:'구글 계정 · 비밀번호 · PASS 인증서 · 신분증',idx:[7,8,9,10],red:1,warn:'개인정보가 걸린 기능입니다. 비밀번호·인증번호는 본인만 누르고, 남에게 알려 주지 마세요.'},
+ {k:'pay',n:'간편결제',ic:'💳',d:'삼성 월렛 · 카카오페이 등록 · 결제 · 송금',idx:[11,12,13,14],red:1,warn:'돈이 오가는 기능입니다. 처음 한 번은 가족이나 강사와 함께 하고, 급한 송금 요청은 꼭 전화로 확인하세요.'}
+];
+const catOf=i=>GCATS.find(c=>c.idx.includes(i));
+let gFilter='all';
+function showGuideList(){$('#gList').style.display='';$('#gPlay').style.display='none';
+ $('#gfilter').innerHTML='<button class="all'+(gFilter==='all'?' on':'')+'" data-f="all"><i></i>전체 '+GUIDES.length+'</button>'+GCATS.map(c=>'<button class="'+(c.red?'r':'')+(gFilter===c.k?' on':'')+'" data-f="'+c.k+'"><i></i>'+c.n+'</button>').join('');
+ const item=i=>{const g=GUIDES[i],d=S.guides.includes(i);return '<button data-g="'+i+'"><span class="gi">'+g[0]+'</span><span class="gt">'+g[1]+'<br><span class="gd'+(d?' done':'')+'">'+(d?'✓ 완료':g[2].length+'단계')+'</span></span><span>▶</span></button>'};
+ $('#glist').innerHTML=GCATS.filter(c=>gFilter==='all'||gFilter===c.k).map(c=>{const dn=c.idx.filter(i=>S.guides.includes(i)).length;
+  return '<div class="gsec'+(c.red?' r':'')+'"><div class="gsec-h"><span class="ci">'+c.ic+'</span><span><b>'+c.n+'</b><small>'+c.d+'</small></span><span class="cnt">'+dn+' / '+c.idx.length+'</span></div>'+(c.warn?'<div class="gsec-warn">⚠ '+c.warn+'</div>':'')+'<div class="gsec-body">'+c.idx.map(item).join('')+'</div></div>'}).join('');
+}
+$('#gfilter').onclick=e=>{const b=e.target.closest('button');if(!b)return;gFilter=b.dataset.f;showGuideList()};
+$('#glist').onclick=e=>{const b=e.target.closest('button');if(!b)return;gi=+b.dataset.g;gs=0;$('#gList').style.display='none';$('#gPlay').style.display='';const C=catOf(gi);$('#gPlay').classList.toggle('r',!!C.red);VCOL=C.red?'#e0312b':'#1a6fe8';$('#gCat').className='gcat'+(C.red?' r':'');$('#gCat').textContent=C.ic+' '+C.n;$('#gTitle').textContent=GUIDES[gi][0]+' '+GUIDES[gi][1];renderStep();window.scrollTo(0,0)};
+function renderStep(){const st=GUIDES[gi][2];
+ $('#gDots').innerHTML=st.map((_,i)=>'<i class="'+(i<=gs?'on':'')+'"></i>').join('');
+ $('#gNum').textContent=gs+1;$('#gText').innerHTML=st[gs];renderViz(st[gs]);const tp=GUIDES[gi][3];$('#gTip').style.display=(tp&&gs===st.length-1)?'':'none';$('#gTip').innerHTML=tp?(catOf(gi).red?'⚠ ':'💡 ')+tp:'';$('#gTip').classList.toggle('warn',!!catOf(gi).red);
+ $('#gPrev').disabled=gs===0;$('#gPrev').style.opacity=gs===0?.4:1;
+ $('#gNext').textContent=gs===st.length-1?'다 했어요 ✓':'다음 ▶';speak((gs+1)+'번. '+st[gs])}
+$('#gPrev').onclick=()=>{if(gs>0){gs--;renderStep()}};
+$('#gNext').onclick=()=>{const st=GUIDES[gi][2];if(gs<st.length-1){gs++;renderStep()}else{if(!S.guides.includes(gi)){S.guides.push(gi);save()}toast('끝까지 해냈어요! 🎉');speak('끝까지 해냈어요');showGuideList()}};
+$('#gSpeak').onclick=()=>{const v=S.voice;S.voice='on';speak((gs+1)+'번. '+GUIDES[gi][2][gs]);S.voice=v};
+
+
+/* ---------- 단추 그림 ---------- */
+const SV=(d,extra)=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"'+(extra||'')+'>'+d+'</svg>';
+const IC={
+ pencil:SV('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M14 6l4 4"/>'),
+ smile:SV('<circle cx="10" cy="12" r="7"/><path d="M7.5 13.5a3.5 3.5 0 0 0 5 0"/><circle cx="8" cy="10" r=".6" fill="currentColor"/><circle cx="12" cy="10" r=".6" fill="currentColor"/><path d="M17 15l4-4-2-2-4 4v2z"/>'),
+ gear:SV('<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/>'),
+ dots:SV('<circle cx="12" cy="5" r="1.4" fill="currentColor"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/><circle cx="12" cy="19" r="1.4" fill="currentColor"/>'),
+ dotsH:SV('<circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/>'),
+ back:SV('<path d="M15 5l-7 7 7 7"/>'),
+ home:SV('<circle cx="12" cy="12" r="7"/>'),
+ plus:SV('<path d="M12 5v14M5 12h14"/>'),
+ phone:SV('<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>'),
+ end:SV('<path d="M3 14c5-5 13-5 18 0l-2.5 2.5-3-1.5v-2.5a10 10 0 0 0-7 0V15l-3 1.5z"/>'),
+ keypad:SV('<circle cx="6" cy="5" r="1.3"/><circle cx="12" cy="5" r="1.3"/><circle cx="18" cy="5" r="1.3"/><circle cx="6" cy="11" r="1.3"/><circle cx="12" cy="11" r="1.3"/><circle cx="18" cy="11" r="1.3"/><circle cx="6" cy="17" r="1.3"/><circle cx="12" cy="17" r="1.3"/><circle cx="18" cy="17" r="1.3"/>'),
+ contact:SV('<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>'),
+ msg:SV('<path d="M4 5h16v11H9l-5 4z"/>'),
+ mic:SV('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/>'),
+ send:SV('<path d="M3 11l18-8-8 18-2-8z"/>'),
+ camera:SV('<path d="M3 7h4l2-3h6l2 3h4v13H3z"/><circle cx="12" cy="13" r="4"/>'),
+ shutter:SV('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="6" fill="currentColor"/>'),
+ image:SV('<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/>'),
+ swipeDown:SV('<path d="M12 3v15M6 12l6 6 6-6"/><path d="M4 3h16"/>'),
+ swipeUp:SV('<path d="M12 21V6M6 12l6-6 6 6"/><path d="M4 21h16"/>'),
+ swipeSide:SV('<path d="M4 12h16M14 6l6 6-6 6"/>'),
+ wifi:SV('<path d="M2 9a15 15 0 0 1 20 0M5 12.5a10 10 0 0 1 14 0M8.5 16a5 5 0 0 1 7 0"/><circle cx="12" cy="19.5" r="1" fill="currentColor"/>'),
+ clock:SV('<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M5 3L2 6M19 3l3 3"/>'),
+ bag:SV('<path d="M5 8h14l-1 13H6z"/><path d="M9 8a3 3 0 0 1 6 0"/>'),
+ user:SV('<circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M6.5 18.5a7 7 0 0 1 11 0"/>'),
+ mail:SV('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'),
+ lock:SV('<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
+ pin:SV('<rect x="2" y="7" width="20" height="10" rx="3"/><circle cx="6.5" cy="12" r="1" fill="currentColor"/><circle cx="10.5" cy="12" r="1" fill="currentColor"/><circle cx="14.5" cy="12" r="1" fill="currentColor"/><circle cx="18.5" cy="12" r="1" fill="currentColor"/>'),
+ cert:SV('<rect x="4" y="3" width="16" height="13" rx="2"/><path d="M8 8h8M8 11h5"/><circle cx="15" cy="17" r="3"/><path d="M13.5 19.5L13 22l2-1 2 1-.5-2.5"/>'),
+ idcard:SV('<rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="11" r="2.5"/><path d="M4.5 16a3.5 3.5 0 0 1 7 0M14 10h5M14 13h4"/>'),
+ face:SV('<path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/><circle cx="9.5" cy="10" r=".7" fill="currentColor"/><circle cx="14.5" cy="10" r=".7" fill="currentColor"/><path d="M9 15a4 4 0 0 0 6 0"/>'),
+ qr:SV('<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM18 18h3v3M14 21h1"/>'),
+ card:SV('<rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M6 15h4"/>'),
+ finger:SV('<path d="M12 4a7 7 0 0 0-7 7v3M19 11a7 7 0 0 0-3-5.7M12 8a3 3 0 0 0-3 3v5M15 11v2a9 9 0 0 1-1.5 5M12 12v3a6 6 0 0 1-2 4.5M17 14.5a12 12 0 0 1-1 4"/>'),
+ nfc:SV('<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M2 8a6 6 0 0 1 0 8M4.5 10a3 3 0 0 1 0 4M22 8a6 6 0 0 0 0 8M19.5 10a3 3 0 0 0 0 4"/>'),
+ shield:SV('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>'),
+ check:SV('<circle cx="12" cy="12" r="10"/><path d="M7 12l3.5 3.5L17 9"/>'),
+ crop:SV('<path d="M6 2v16h16M2 6h16v16"/>'),
+ filter:SV('<circle cx="9" cy="9" r="5"/><circle cx="15" cy="9" r="5"/><circle cx="12" cy="15" r="5"/>'),
+ sun:SV('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>'),
+ text:SV('<path d="M5 5h14M12 5v14M9 19h6"/>'),
+ sticker:SV('<path d="M4 4h16v10l-6 6H4z"/><path d="M14 20v-6h6"/><circle cx="9" cy="10" r=".7" fill="currentColor"/><circle cx="14" cy="10" r=".7" fill="currentColor"/>'),
+ pen:SV('<path d="M3 21c3-1 5-3 6-6l9-9a2 2 0 0 0-3-3l-9 9c-3 1-5 3-6 6"/>'),
+ trash:SV('<path d="M4 7h16M9 7V4h6v3M6 7l1 14h10l1-14"/>'),
+ sparkle:SV('<path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'),
+ grid:SV('<rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/>'),
+ film:SV('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 8h4M3 12h4M3 16h4M17 8h4M17 12h4M17 16h4"/>'),
+ palette:SV('<path d="M12 3a9 9 0 0 0 0 18c1.5 0 2-1 2-2s-1-1.5-1-2.5 1-1.5 2-1.5h2a4 4 0 0 0 4-4c0-4.5-4-8-9-8z"/><circle cx="7.5" cy="11" r="1" fill="currentColor"/><circle cx="10" cy="7" r="1" fill="currentColor"/><circle cx="15" cy="7" r="1" fill="currentColor"/>'),
+ ratio:SV('<rect x="3" y="6" width="10" height="10" rx="1"/><rect x="15" y="3" width="6" height="18" rx="1"/>'),
+ timeline:SV('<rect x="2" y="8" width="5" height="8" rx="1"/><rect x="9.5" y="8" width="5" height="8" rx="1"/><rect x="17" y="8" width="5" height="8" rx="1"/><path d="M12 3v18"/>'),
+ music:SV('<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>'),
+ tap:SV('<path d="M9 11V5a2 2 0 0 1 4 0v6m0-2a2 2 0 0 1 4 0v4a7 7 0 0 1-7 7h-1a5 5 0 0 1-4-2l-2.5-3.5a1.8 1.8 0 0 1 2.8-2.2L9 14"/>'),
+ long:SV('<path d="M9 13V7a2 2 0 0 1 4 0v6m0-2a2 2 0 0 1 4 0v4a7 7 0 0 1-7 7h-1a5 5 0 0 1-4-2l-2.5-3.5a1.8 1.8 0 0 1 2.8-2.2L9 16"/><path d="M5 4a7 7 0 0 1 12 0" stroke-dasharray="2 2"/>'),
+ search:SV('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'),
+ slider:SV('<path d="M3 12h18"/><circle cx="15" cy="12" r="3" fill="currentColor"/><path d="M5 8v8M19 8v8" stroke-width="1"/>')
+};
+const POS={'top-right':[100,26,'화면 오른쪽 위'],'top':[60,26,'화면 위쪽'],'top-left':[22,26,'화면 왼쪽 위'],'center':[60,100,'화면 가운데'],'bottom':[60,170,'화면 아래쪽'],'bottom-left':[24,170,'화면 아래 왼쪽'],'bottom-right':[96,170,'화면 아래 오른쪽'],'nav-center':[60,199,'맨 아래 가운데'],'nav-right':[88,199,'맨 아래 오른쪽'],'nav-left':[32,199,'맨 아래 왼쪽'],'home':[60,96,'홈 화면 앱 아이콘']};
+// [검사할 글, 그림] — 위에서부터 먼저 맞는 것 사용
+const VR=[
+ [/원본 복원/,{t:'원본 복원',p:'top'}],
+ [/다른 파일로 저장/,{t:'다른 파일로 저장',p:'top-right'}],
+ [/⋮|점 세 개/,{i:'dots',l:'더보기 ⋮',p:'top-right'}],
+ [/스마일|꾸미기\)/,{i:'smile',l:'꾸미기',p:'bottom'}],
+ [/^텍스트/,{i:'text',l:'텍스트',p:'bottom'}],
+ [/스티커로 저장/,{t:'스티커로 저장',p:'center'}],
+ [/^스티커$/,{i:'sticker',l:'스티커',p:'bottom'}],
+ [/^그리기$/,{i:'pen',l:'그리기',p:'bottom'}],
+ [/휴지통/,{i:'trash',l:'휴지통',p:'top'}],
+ [/^자르기$/,{i:'crop',l:'자르기',p:'bottom-left'}],
+ [/^필터$/,{i:'filter',l:'필터',p:'bottom'}],
+ [/^밝기$/,{i:'sun',l:'밝기',p:'bottom-right'}],
+ [/콜라주 · GIF/,{i:'sparkle',l:'콜라주·GIF·영상',p:'center'}],
+ [/만들기 → 콜라주|^콜라주/,{i:'grid',l:'콜라주',p:'center'}],
+ [/영화|스튜디오/,{i:'film',l:'영화(영상)',p:'center'}],
+ [/^만들기$/,{i:'sparkle',l:'만들기',p:'bottom-right'}],
+ [/배치/,{i:'grid',l:'배치',p:'bottom'}],
+ [/^배경$/,{i:'palette',l:'배경',p:'bottom'}],
+ [/^비율$/,{i:'ratio',l:'비율',p:'bottom'}],
+ [/교체/,{i:'image',l:'사진 한 칸',p:'center'}],
+ [/^순서$/,{i:'timeline',l:'타임라인',p:'bottom'}],
+ [/^음악$/,{i:'music',l:'음악',p:'bottom'}],
+ [/여러 개 선택/,{i:'tap',l:'톡톡 선택',p:'center'}],
+ [/길게/,{i:'long',l:'꾹 길게 누르기',p:'center'}],
+ [/톡톡/,{i:'tap',l:'톡톡 누르기',p:'center'}],
+ [/^연필 모양$/,{i:'pencil',l:'새 대화',p:'bottom-right'}],
+ [/^연필/,{i:'pencil',l:'편집(연필)',p:'bottom'}],
+ [/^설정/,{i:'gear',l:'설정',p:'home',tile:1}],
+ [/디스플레이/,{t:'디스플레이',p:'center'}],
+ [/글자 크기와 스타일/,{t:'글자 크기와 스타일',p:'center'}],
+ [/막대를 오른쪽/,{i:'slider',l:'막대 밀기',p:'center'}],
+ [/뒤로/,{i:'back',l:'뒤로 가기',p:'nav-right'}],
+ [/^전화$/,{i:'phone',l:'전화',p:'home',tile:1}],
+ [/^키패드$/,{i:'keypad',l:'키패드',p:'bottom-left'}],
+ [/초록색 전화 단추/,{i:'phone',l:'통화',p:'bottom',c:'green'}],
+ [/^빨간 단추$/,{i:'end',l:'끊기',p:'bottom',c:'red'}],
+ [/^옆으로 밀어$/,{i:'swipeSide',l:'옆으로 밀기',p:'bottom',c:'green'}],
+ [/^메시지$/,{i:'msg',l:'메시지',p:'home',tile:1}],
+ [/^마이크$/,{i:'mic',l:'마이크',p:'bottom-right'}],
+ [/종이비행기/,{i:'send',l:'보내기',p:'bottom-right'}],
+ [/^카메라$/,{i:'camera',l:'카메라',p:'home',tile:1}],
+ [/카메라로/,{i:'camera',l:'사진 찍기',p:'center'}],
+ [/하얀 동그라미/,{i:'shutter',l:'촬영',p:'bottom'}],
+ [/작은 사진/,{i:'image',l:'방금 찍은 사진',p:'bottom-left'}],
+ [/^갤러리$/,{i:'image',l:'갤러리',p:'home',tile:1}],
+ [/^카카오톡$/,{w:'카카오톡',p:'home'}],
+ [/＋.*시간|시간을 위아래/,{i:'plus',l:'알람 추가',p:'top-right'}],
+ [/^＋$/,{i:'plus',l:'＋',p:'bottom-left'}],
+ [/^앨범$/,{i:'image',l:'앨범',p:'bottom'}],
+ [/^전송$/,{t:'전송',p:'bottom-right'}],
+ [/맨 위에서 아래로/,{i:'swipeDown',l:'위에서 아래로',p:'top'}],
+ [/Wi-Fi/,{i:'wifi',l:'Wi-Fi 길게',p:'top'}],
+ [/^연결$/,{t:'연결',p:'bottom-right'}],
+ [/^시계$/,{i:'clock',l:'시계',p:'home',tile:1}],
+ [/^저장$|저장\(내보내기\)/,{t:'저장',p:'top-right'}],
+ [/^Play 스토어$/,{i:'bag',l:'Play 스토어',p:'home',tile:1}],
+ [/프로필/,{i:'user',l:'내 프로필',p:'top-right'}],
+ [/이메일 주소/,{i:'mail',l:'내 구글 계정',p:'top'}],
+ [/설정 → Google|^Google$/,{t:'Google',p:'center'}],
+ [/Google 계정 관리/,{t:'Google 계정 관리',p:'center'}],
+ [/보안 및 로그인/,{t:'보안 및 로그인',p:'center'}],
+ [/^비밀번호 변경$/,{t:'비밀번호 변경',p:'bottom-right'}],
+ [/^비밀번호$/,{i:'lock',l:'비밀번호',p:'center'}],
+ [/^PASS$|PASS by/,{w:'PASS',p:'home'}],
+ [/내 통신사/,{w:'SKT · KT · U+',p:'center'}],
+ [/비밀번호 6자리/,{i:'pin',l:'숫자 6자리',p:'center'}],
+ [/^인증서$/,{i:'cert',l:'인증서',p:'center'}],
+ [/발급 완료/,{i:'check',l:'발급 완료',p:'center'}],
+ [/모바일신분증/,{i:'idcard',l:'모바일신분증',p:'center'}],
+ [/^주민등록증$/,{i:'idcard',l:'주민등록증·면허증',p:'center'}],
+ [/발급 날짜/,{i:'idcard',l:'발급 날짜 입력',p:'center'}],
+ [/얼굴 인식/,{i:'face',l:'얼굴 인식',p:'center'}],
+ [/QR코드|바코드/,{i:'qr',l:'QR·바코드',p:'center'}],
+ [/삼성 계정/,{i:'user',l:'삼성 계정',p:'center'}],
+ [/^삼성 월렛$/,{w:'삼성 월렛',p:'home'}],
+ [/맨 아래\(홈 단추 쪽\)에서 위로/,{i:'swipeUp',l:'아래에서 위로',p:'nav-center'}],
+ [/^카드$/,{i:'card',l:'카드 고르기',p:'center'}],
+ [/^지문$/,{i:'finger',l:'지문',p:'bottom'}],
+ [/뒷면을 카드 단말기/,{i:'nfc',l:'폰 뒷면 대기',p:'center'}],
+ [/^본인 인증$|^인증$/,{i:'shield',l:'본인 인증',p:'center'}],
+ [/···/,{i:'dotsH',l:'더보기 ···',p:'nav-right'}],
+ [/계좌 연결하기/,{t:'계좌 연결하기',p:'center'}],
+ [/^결제$/,{t:'결제',p:'bottom'}],
+ [/^송금$/,{t:'송금',p:'bottom-left'}],
+ [/받는 사람 이름/,{i:'user',l:'받는 사람 확인',p:'center'}],
+ [/^확인$/,{t:'확인',p:'bottom'}],
+ [/결제 비밀번호/,{i:'pin',l:'결제 비밀번호',p:'center'}],
+ [/결제 카드/,{i:'card',l:'결제 카드',p:'center'}],
+ [/^키패드|연락처/,{i:'contact',l:'연락처',p:'bottom'}],
+ [/^알람$/,{i:'clock',l:'알람',p:'bottom'}],
+ [/글자 칸/,{i:'keypad',l:'글자 칸 → 자판',p:'bottom'}],
+ [/와이파이 이름/,{i:'wifi',l:'와이파이 이름',p:'center'}],
+ [/^완료$/,{t:'완료',p:'top-right'}],
+ [/원하는 대로 편집/,{i:'pencil',l:'편집하기',p:'bottom'}],
+ [/원본과 편집본/,{i:'image',l:'두 장 확인',p:'center'}],
+ [/편집했던 사진/,{i:'image',l:'편집했던 사진',p:'center'}]
+];
+function findViz(html){
+  const ems=[...html.matchAll(/<em>(.*?)<\/em>/g)].map(m=>m[1]);
+  const plain=html.replace(/<[^>]+>/g,'');
+  for(const t of [...ems,plain]){for(const [re,v] of VR){if(re.test(t))return v}}
+  return null;
+}
+let VCOL='#1a6fe8';
+function miniPhone(p){
+  const [x,y]=POS[p]||POS.center;
+  let g='<rect x="2" y="2" width="116" height="216" rx="16" fill="#0a0a0a"/><rect x="8" y="10" width="104" height="180" rx="8" fill="#2b2b2b"/>';
+  g+='<rect x="14" y="14" width="22" height="4" rx="2" fill="#666"/><rect x="88" y="14" width="18" height="4" rx="2" fill="#666"/>';
+  if(p==='home'){for(let r=0;r<3;r++)for(let c=0;c<3;c++){const hx=22+c*30,hy=70+r*30;const on=(r===1&&c===1);g+='<rect x="'+(hx-10)+'" y="'+(hy-10)+'" width="20" height="20" rx="5" fill="'+(on?VCOL:'#4a4a4a')+'"/>'}}
+  else{g+='<rect x="16" y="40" width="88" height="70" rx="6" fill="#3d3d3d"/><rect x="16" y="118" width="70" height="6" rx="3" fill="#3d3d3d"/><rect x="16" y="130" width="54" height="6" rx="3" fill="#3d3d3d"/>'}
+  g+='<rect x="8" y="190" width="104" height="18" fill="#111"/><text x="32" y="203" fill="#bbb" font-size="11" text-anchor="middle">|||</text><circle cx="60" cy="199" r="5" fill="none" stroke="#bbb" stroke-width="1.6"/><text x="88" y="203" fill="#bbb" font-size="12" text-anchor="middle">&lt;</text>';
+  g+='<circle class="pulse" cx="'+x+'" cy="'+y+'" r="12" fill="none" stroke="'+VCOL+'" stroke-width="3"/><circle cx="'+x+'" cy="'+y+'" r="6" fill="'+VCOL+'" stroke="#fff" stroke-width="2"/>';
+  return '<svg viewBox="0 0 120 220" aria-hidden="true">'+g+'</svg>';
+}
+function renderViz(html){
+  const v=findViz(html);const box=$('#gViz');
+  if(!v){box.innerHTML='';return}
+  let b;
+  if(v.t)b='<div class="bimg txt">'+v.t+'</div>';
+  else if(v.w)b='<div class="bimg tile word">'+v.w+'</div>';
+  else b='<div class="bimg'+(v.tile?' tile':'')+(v.c?' '+v.c:'')+'">'+IC[v.i]+'</div>';
+  const name=v.t||v.w||v.l, where=(POS[v.p]||POS.center)[2];
+  box.innerHTML='<div class="viz">'+b+'<div class="mini">'+miniPhone(v.p)+'</div></div><p class="vizcap">👆 <b>'+name+'</b> · 위치: '+where+'</p>';
+}
+
+/* ---------- 복습 ---------- */
+const CHECKS=['글자 크기를 내 눈에 맞게 바꿀 수 있다','전화를 걸고 받을 수 있다','문자를 보낼 수 있다 (말로 입력하기 포함)','사진을 찍고 갤러리에서 찾을 수 있다','카카오톡으로 사진을 보낼 수 있다','와이파이에 연결할 수 있다','알람을 맞출 수 있다','길을 잃었을 때 홈 단추로 돌아올 수 있다','내 구글 계정(이메일)을 확인할 수 있다','PASS 인증서로 본인 인증을 할 수 있다','PASS에 신분증을 등록하고 보여 줄 수 있다','삼성 월렛이나 카카오페이로 결제할 수 있다','사진을 편집하고 다른 파일로 저장할 수 있다','편집한 사진을 원본으로 되돌릴 수 있다','콜라주나 영상을 만들어 보낼 수 있다'];
+function renderChecks(){$('#checklist').innerHTML=CHECKS.map((c,i)=>'<label class="'+(S.checks.includes(i)?'on':'')+'"><input type="checkbox" data-i="'+i+'" '+(S.checks.includes(i)?'checked':'')+'>'+c+'</label>').join('')}
+$('#checklist').onchange=e=>{const i=+e.target.dataset.i;S.checks=e.target.checked?[...new Set([...S.checks,i])]:S.checks.filter(x=>x!==i);save();renderChecks()};
+let Q=[],qi=0,qs=0;
+function qRender(){
+ if(qi>=Q.length){$('#quiz').innerHTML='<p style="font-size:1.2rem;font-weight:900">5문제 중 '+qs+'개 맞혔어요! '+(qs>=4?'🎉':'💪')+'</p><p class="lead">틀린 용어는 1단계 카드로 다시 보세요.</p><button class="btn" id="qStart">다시 풀기</button>';$('#qStart').onclick=qStart;speak('5문제 중 '+qs+'개 맞혔어요');return}
+ const a=Q[qi];let opts=[a];while(opts.length<3){const r=Math.floor(Math.random()*TERMS.length);if(!opts.includes(r))opts.push(r)}opts.sort(()=>Math.random()-.5);
+ $('#quiz').innerHTML='<p class="counter">'+(qi+1)+' / 5</p><p style="font-size:1.1rem;font-weight:700">「'+TERMS[a][2]+'」</p>'+opts.map(o=>'<button class="qopt" data-o="'+o+'">'+TERMS[o][1]+'</button>').join('');
+ $$('.qopt').forEach(b=>b.onclick=()=>{const o=+b.dataset.o;$$('.qopt').forEach(x=>{x.disabled=true;if(+x.dataset.o===a)x.classList.add('right')});
+  if(o===a){qs++;toast('정답! 👏');speak('정답')}else{b.classList.add('wrong');toast('정답은 「'+TERMS[a][1]+'」');speak('정답은 '+TERMS[a][1])}
+  setTimeout(()=>{qi++;qRender()},1500)});
+}
+function qStart(){Q=[...TERMS.keys()].sort(()=>Math.random()-.5).slice(0,5);qi=0;qs=0;qRender()}
+$('#qStart').onclick=qStart;
+
+/* ---------- 설정 ---------- */
+function applySettings(){
+ document.documentElement.style.setProperty('--fs',S.font+'px');document.body.classList.toggle('dark',S.theme==='dark');
+ $$('#sFont button').forEach(b=>b.classList.toggle('on',+b.dataset.v===S.font));
+ $$('#sTheme button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.theme));
+ $$('#sVoice button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.voice));
+}
+$('#sFont').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.font=+b.dataset.v;save();applySettings();toast('글자 크기를 바꿨어요')};
+$('#sTheme').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.theme=b.dataset.v;save();applySettings()};
+$('#sVoice').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.voice=b.dataset.v;save();applySettings();if(S.voice==='on')speak('소리로 읽어 드릴게요')};
+let resetArm=false;
+$('#sReset').onclick=()=>{if(!resetArm){resetArm=true;$('#sReset').textContent='한 번 더 누르면 지워집니다';setTimeout(()=>{resetArm=false;$('#sReset').textContent='진도 초기화'},3000);return}
+ S.known=[];S.practice=[];S.guides=[];S.checks=[];save();resetArm=false;$('#sReset').textContent='진도 초기화';$$('.task').forEach(t=>t.classList.remove('done'));renderChecks();renderTerm();toast('처음부터 시작합니다')};
+
+/* ---------- 시작 ---------- */
+S.practice.forEach(id=>{const e=document.getElementById(id);if(e)e.classList.add('done')});
+applySettings();renderTabs();renderTerm();renderChecks();showGuideList();progress();
+</script>
+</body>
+</html>
